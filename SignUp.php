@@ -3,22 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SignIn</title>
+    <title>SignUp!</title>
+    <link rel="icon" href="/picture/bicycle.png" type="image/png">
+    <link rel="stylesheet" href="/css/Landpage.css">
     <link rel="stylesheet" href="/css/SignIn.Css">
 </head>
 <body>
-    
-
-
+<?php
+    include 'navigationheader.php';
+?>
+<div class="centerdiv">
 <div class="container">
 
     
     <div class="signincont">
         
         <div class="buttoncont">
-            <a href="/SignIn.Html"><button class="sgnUp">Sign Up</button></a>
+            <a href="/SignUp.php"><button class="sgnUp">Sign Up</button></a>
             
-            <a href="#"><button class="sgnIn">Sign In</button></a>
+            <a href="/Login.php"><button class="sgnIn">Sign In</button></a>
         </div>
 
             <div class="formcont">
@@ -81,9 +84,11 @@
             </div>
         
     </div>
+
     <div class="imgcont">
         <img src="/picture/Blue Minimalist Quotes  Desktop Wallpaper.png" alt="bg"/>
     </div>
+</div>
 </div>
 
 </body>

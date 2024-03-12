@@ -1,0 +1,204 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: rgb(36, 37, 38);
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+/* Add styles for the navigation bar */
+nav {
+    background-color: #333; /* Background color of the navigation bar */
+    padding: 10px 0; /* Add padding to the top and bottom of the navigation bar */
+}
+
+nav ul {
+    list-style-type: none; /* Remove default list styles */
+    margin: 0;
+    padding: 0;
+    text-align: center; /* Align list items horizontally */
+}
+
+nav ul li {
+    display: inline; /* Display list items horizontally */
+}
+
+nav ul li a {
+    display: inline-block; /* Display anchor tags as blocks */
+    color: #fff; /* Text color of navigation links */
+    padding: 10px 20px; /* Add padding to the navigation links */
+    text-decoration: none; /* Remove default underline */
+}
+
+nav ul li a:hover {
+    background-color: #555; /* Background color of navigation links on hover */
+}
+
+/* Add new styles for the hr element */
+.trending-line {
+    margin-top: 5px; /* Adjust the top margin to move the line down */
+    border: none; /* Remove the default border */
+    border-top: 2px solid #fff; /* Add a top border to create the line */
+}
+
+.search-box {
+    width: 480px; /* Adjust the width of the search box */
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: -30rem; /* Moves the search box 20rem down from the top */
+    margin-left: auto; /* Aligns the search box to the center */
+    margin-right: auto; /* Aligns the search box to the center */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-box input[type="text"] {
+    width: 100%; /* Set width to 100% to fill the search box */
+    height: 30px; /* Adjust the height of the textbox */
+    padding: 10px;
+    border: 1px solid #fff;
+    border-radius: 8px;
+   
+}
+.search-box input[type="text"]::placeholder {
+    font-size: 16px ; /* Adjust the font size of the placeholder text */
+    color: #76777A;
+    padding: 10px; 
+}
+/* Add styles for centered content */
+.Share-Route {
+    
+    padding: 20px;
+    width: 460px;
+    background-color: #3A3B3C;
+    border-radius: 8px;
+    text-align: center; /* Align text content horizontally */
+    margin-top: -10rem; /* Moves the search box 20rem down from the top */
+    margin-left: -38rem; /* Aligns the search box to the center */
+    margin-right: auto; /* Aligns the search box to the center */
+    
+    
+}
+.Share-Route button {
+    padding: 10px 20px; /* Adjust padding as needed */
+    background-color: #3A3B3C; /* Button background color */
+    width: 460px;
+    color: #fff; /* Button text color */
+    border: none; /* Remove button border */
+    border-radius: 5px; /* Add border radius for rounded corners */
+    cursor: pointer; /* Show pointer cursor on hover */
+    
+}
+.Share-Route h2 {
+    margin-bottom: 10px; /* Add margin to separate heading from paragraph */
+}
+/* Existing styles */
+.popup-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 1;
+}
+
+.popup-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.popup-content div {
+    display: flex;
+    margin-bottom: 20px; /* Adjust as needed for spacing between label-input pairs */
+}
+
+.popup-content label {
+    width: 120px; /* Adjust as needed for label width */
+    margin-right: 10px; /* Adjust as needed for spacing between label and input */
+    align-self: flex-start; /* Align label to the top */
+    height: 30px; /* Set the same height as the text box */
+    line-height: 30px; /* Vertically center the text within the label */
+}
+
+.popup-content input[type="text"] {
+    flex: 1; /* Fill remaining space */
+    width: 450px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 30px; /* Set the same height as the label */
+}
+
+.popup-content textarea {
+    resize: none; /* Disable resizing */
+    height: 100px; /* Set a fixed height */
+    width: 100%; /* Set width to fill the container */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+
+.close-btn {
+    position: absolute;
+    color: #3A3B3C;
+    font-size: large;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+
+
+.panel {
+    flex: 2;
+    color: #fff;
+    padding: 20px;
+    background-color: #3A3B3C;
+}
+
+.left-panel {
+    flex: 0.3; /* Adjust the width of the left panel */
+    margin-right: 10px;
+    border-radius: 8px;
+}
+
+.right-panel {
+    flex: 0.3; /* Adjust the width of the right panel */
+    margin-left: 10px;
+    border-radius: 8px;
+}
+/* Remove bullets from list items */
+.left-panel ul {
+    list-style: none; /* Remove default list-style */
+}
+/* Add spacing between list items */
+.left-panel ul li {
+    margin-bottom: 10px; /* Adjust the bottom margin to add space between items */
+    
+}
+.right-panel ul{
+    list-style: none; /* Remove default list-style */
+
+}
+.right-panel ul li{
+    margin-bottom: 10px; /* Adjust the bottom margin to add space between items */
+}

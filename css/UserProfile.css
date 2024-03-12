@@ -1,0 +1,156 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: rgb(36, 37, 38);
+}
+
+    /* Add styles for the navigation bar */
+nav {
+    background-color: #333; /* Background color of the navigation bar */
+    padding: 10px 0; /* Add padding to the top and bottom of the navigation bar */
+}
+
+nav ul {
+    list-style-type: none; /* Remove default list styles */
+    margin: 0;
+    padding: 0;
+    text-align: center; /* Align list items horizontally */
+}
+
+nav ul li {
+    display: inline; /* Display list items horizontally */
+}
+
+nav ul li a {
+    display: inline-block; /* Display anchor tags as blocks */
+    color: #fff; /* Text color of navigation links */
+    padding: 10px 20px; /* Add padding to the navigation links */
+    text-decoration: none; /* Remove default underline */
+}
+
+nav ul li a:hover {
+    background-color: #555; /* Background color of navigation links on hover */
+}
+
+.panel {
+    width: 1300px;
+    height: 280px;
+    background-color: #3A3B3C;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: absolute; /* Set the panel's position to absolute */
+    top: 35%; /* Move the panel 35% down from the top */
+    left: 50%; /* Move the panel 50% from the left */
+    transform: translate(-50%, -50%); /* Center the panel */
+}
+.circle {
+width: 200px; /* Adjust the width of the circle */
+height: 200px; /* Adjust the height of the circle */
+background-color: #fff; /* Color of the circle */
+border-radius: 50%; /* Make it a circle */
+position: absolute; /* Position the circle absolutely */
+left: 1%; /* Position it at the left edge of the panel */
+top: 50%; /* Center it vertically */
+transform: translateY(-50%); /* Adjust vertical centering */
+}
+.user-info {
+    position: absolute; /* Position the user info block */
+    left: 110%; /* Position it to the right of the circle */
+    top: 50%; /* Align it vertically */
+    transform: translateY(-50%); /* Adjust vertical centering */
+    color: #fff;
+}
+
+.user-info h2 {
+    margin-top: 0; /* Remove default margin for the heading */
+}
+
+.user-info p {
+    margin-top: 5px; /* Add some spacing between paragraphs */
+}
+hr{
+    width: 64rem;
+    position: absolute; /* Position the user info block */
+    left: 8%; /* Position it to the right of the circle */
+    top: 110%; /* Align it vertically */
+    transform: translateY(-50%); /* Adjust vertical centering */
+}
+.actions {
+display: flex;
+justify-content: space-between;
+margin-top: 20px; /* Add spacing between actions and hr */
+width: 90%; /* Adjust the width of the actions container */
+position: absolute; /* Position the actions container */
+left: 5%; /* Align the actions container horizontally */
+top: 55%;
+transform: translateY(110%); /* Move the actions container below the hr */
+}
+.left-action{
+position: absolute; /* Position the actions container */
+left: 10%; /* Align the actions container horizontally */
+transform: translateY(110%); /* Move the actions container below the hr */
+}
+.center-action{
+position: absolute; /* Position the actions container */
+left: 500px; /* Align the actions container horizontally */
+transform: translateY(110%); /* Move the actions container below the hr */
+}
+.right-action{
+position: absolute; /* Position the actions container */
+right: -950px; /* Align the actions container horizontally */
+transform: translateY(110%); /* Move the actions container below the hr */
+}
+.second-panel {
+width: 1300px; /* Adjust width as needed */
+height: 110px; /* Adjust height as needed */
+background-color: #3A3B3C; /* Background color */
+border-radius: 10px; /* Border radius */
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow */
+position: absolute; /* Set the panel's position to absolute */
+top: 52%; /* Adjust vertical position */
+left: 50%; /* Adjust horizontal position */
+transform: translate(-50%, 50%); /* Center the panel */
+display: flex; /* Use flexbox for better alignment */
+justify-content: center; /* Center the content horizontally */
+align-items: center; /* Center the content vertically */
+}
+
+.post {
+width: 1600px; /* Adjust the width of the search box */
+padding: 10px;
+border-radius: 8px;
+margin-top: 7px; /* Moves the search box 20rem down from the top */
+display: flex; /* Use flexbox for better alignment */
+align-items: center; /* Center the content vertically */
+}
+
+.circle2 {
+width: 40px; /* Adjust the width of the circle */
+height: 40px; /* Adjust the height of the circle */
+background-color: #fff; /* Color of the circle */
+border-radius: 50%; /* Make it a circle */
+margin-right: 10px; /* Add spacing between circle and textbox */
+}
+
+.post input[type="text"] {
+width: calc(100% - 50px); /* Adjust the width of the textbox */
+height: 30px; /* Adjust the height of the textbox */
+padding: 10px;
+border: 1px solid #fff;
+border-radius: 8px;
+}
+
+.post input[type="text"]::placeholder {
+font-size: 16px; /* Adjust the font size of the placeholder text */
+color: #76777A;
+padding: 10px; 
+}
+.message-text {
+position: absolute; /* Set the position to absolute */
+top: 85%; /* Adjust the vertical position below the second container */
+left: 50%; /* Adjust the horizontal position to center */
+transform: translateX(-50%); /* Center the text horizontally */
+color: #fff; /* Text color */
+font-size: 18px; /* Font size */
+}

@@ -1,0 +1,110 @@
+body{
+    font-family: Arial;
+    padding: 0;
+    margin: 0;
+}
+
+.containerr{
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    height:100%;
+    background-image: radial-gradient(circle at top left, #a2cbe9,#95BAD5, #3A3B3C, #292a2b, #202122);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.navbar{
+    height:4rem;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.imglogo{
+    align-items: center;
+    display: flex;
+    justify-content: end;
+    width: 10rem;
+}
+
+.imglogo a{
+    display: flex;
+    flex-direction: row;
+    justify-content:start;
+    align-items: center;
+    text-decoration: none;
+}
+
+.imglogo a img{
+    height: 2.57rem;
+    width: 2.57rem;
+}
+
+.imglogo a p{
+    font-size: medium;
+}
+
+.navbutton{
+    display: flex;
+    flex-direction: row;
+    padding: .1rem 0 .1rem 0;
+}
+
+.navbutton div{
+    align-items: center;
+    border-radius: 2.5rem;
+    display: flex;
+    height: 2.57rem;
+    justify-content: center;
+    margin-right: 1.5rem;
+    transition:background-color 0.3s ease, box-shadow 0.3s ease;
+    width: 6.5rem;
+}
+
+.navbutton div:hover{
+    background-color:#3A3B3C ;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.navbutton div:active{
+    box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.navbutton div a{
+    text-decoration: none;
+}
+
+p{
+    color: white;
+    font-size:small;
+    font-weight: bold;
+    padding: .4rem;
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        height: auto;
+    }
+
+    .navbar {
+        height: auto;
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .imglogo,
+    .navbutton {
+        margin-bottom: 1rem;
+    }
+
+    .navbutton div{
+        margin-right: .5rem;
+    }
+
+    .navbuttonend{
+        margin-right: -.5rem;
+    }
+}

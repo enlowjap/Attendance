@@ -1,0 +1,13 @@
+html{
+    min-height: 100%;
+}
+
+body{
+    min-height: 100%;
+    background-color: #3A3B3C;
+    background-size:cover; /* Cover the entire background */
+    font-family: Arial;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+}

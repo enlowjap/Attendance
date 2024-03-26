@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2 Panel Layout</title>
+<title>Content Management</title>
+<link rel="icon" href="/picture/bicycle.png" type="image/png">
 <style>
     body, html {
+        font-family:Arial;
         margin: 0;
         padding: 0;
         height: 100%;
@@ -23,6 +25,11 @@
         flex-direction: column;
         align-items: center;
     }
+
+    .sidebar a{
+        text-decoration:none;
+    }
+
     .content {
         flex: 1;
         padding: 20px;
@@ -139,9 +146,11 @@
 <div class="container">
     <div class="sidebar">
         <h2>ADMIN</h2>
-        <button class="postbtn">Post Management</button>
-        <button class="Accbtn" style="margin-top: 16px;">Accounts</button>
-        <button class="button logout-button">Logout</button>
+        <a href="/Postmanagement.php"><button class="postbtn">Post Management</button></a>
+
+        <a href="/Accounts.php"><button class="Accbtn" style="margin-top: 16px;">Accounts</button></a>
+
+        <a href="/AdminLogin.php"><button class="button logout-button">Logout</button></a>
     </div>
     <div class="content">
         <h2 class="panel-title">Post management</h2>

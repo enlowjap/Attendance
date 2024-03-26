@@ -1,3 +1,13 @@
+<?php 
+
+      if(isset($_COOKIE['ID'])){
+         $user_ID = $_COOKIE['ID'];
+      }else{
+         $user_ID = '';
+         header('location:Login.php');
+ }?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,6 +24,7 @@
             
             <li><a href="/Home.php">Home</a></li>
             <li><a href="/UserProfile.php">Profile</a></li>
+            <li><a href="/logout.php">Logout</a></li>
         </ul>
     </nav>
     

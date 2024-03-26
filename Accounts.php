@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Accountst</title>
+<title>Accounts</title>
+<link rel="icon" href="/picture/bicycle.png" type="image/png">
 <style>
     body, html {
+        font-family:Arial;
         margin: 0;
         padding: 0;
         height: 100%;
@@ -121,7 +123,27 @@
     .add-btn:hover {
         background-color: #218838;
     }
-   
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    th:first-child, td:first-child {
+        border-left: none;
+    }
+    th:last-child, td:last-child {
+        border-right: none;
+    }
+    tr:hover {
+        background-color: #f5f5f5;
+    }
     h2 {
         color: #fff;
     }
@@ -132,9 +154,11 @@
 <div class="container">
     <div class="sidebar">
         <h2>ADMIN</h2>
-        <button class="postbtn">Post Management</button>
-        <button class="Accbtn" style="margin-top: 16px;">Accounts</button>
-        <button class="button logout-button">Logout</button>
+        <a href="/Postmanagement.php"><button class="postbtn">Post Management</button></a>
+
+        <a href="/Accounts.php"><button class="Accbtn" style="margin-top: 16px;">Accounts</button></a>
+
+        <a href="/AdminLogin.php"><button class="button logout-button">Logout</button></a>
     </div>
     <div class="content">
         <h2 class="panel-title">Accounts</h2>
@@ -143,12 +167,68 @@
                 <button class="tab active" onclick="showTab('user')">User Account</button>
                 <button class="tab" onclick="showTab('admin')">Admin Account</button>
             </div>                     
-            <button class="add-btn">Add</button> <!-- Add button for Admin Account -->
+            <button class="add-btn" id="addBtn">Add</button>
             <div class="tab-content active" id="user-tab-content">
-                User Account content goes here...
+                <h3>User Account Table</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Date created</th>
+                            <th>Role</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1001</td>
+                            <td>John Doe</td>
+                            <td>john@example.com</td>
+                            <td>2022-03-15</td>
+                            <td>User</td>
+                        </tr>
+                        <tr>
+                            <td>1002</td>
+                            <td>Jane Smith</td>
+                            <td>jane@example.com</td>
+                            <td>2022-03-16</td>
+                            <td>User</td>
+                        </tr>
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
             </div>
             <div class="tab-content" id="admin-tab-content">
-                Admin Account content goes here...
+                <h3>Admin Account Table</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Date created</th>
+                            <th>Role</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2001</td>
+                            <td>Admin 1</td>
+                            <td>admin1@example.com</td>
+                            <td>2022-03-15</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td>2002</td>
+                            <td>Admin 2</td>
+                            <td>admin2@example.com</td>
+                            <td>2022-03-16</td>
+                            <td>Admin</td>
+                        </tr>
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -156,19 +236,17 @@
 
 <script>
     function showTab(tabName) {
-        var tabs = document.querySelectorAll('.tab');
-        var tabContents = document.querySelectorAll('.tab-content');
-        
-        tabs.forEach(function(tab) {
-            tab.classList.remove('active');
-        });
-        
-        tabContents.forEach(function(content) {
-            content.classList.remove('active');
-        });
-        
-        document.getElementById(tabName + '-tab-content').classList.add('active');
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+        document.querySelector('#' + tabName + '-tab-content').classList.add('active');
         document.querySelector('.tab[data-tab="' + tabName + '"]').classList.add('active');
+        
+        // Hide the Add button when switching to the User Account tab
+        if (tabName === 'user') {
+            document.getElementById('addBtn').style.display = 'none';
+        } else {
+            document.getElementById('addBtn').style.display = 'block';
+        }
     }
 </script>
 

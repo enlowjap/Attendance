@@ -6,7 +6,6 @@
     <title>Log In</title>
     <link rel="icon" href="/picture/bicycle.png" type="image/png">
     <link rel="stylesheet" href="/css/AdminLogin.css">
-    <link rel="stylesheet" href="/css/logIn.css">
 </head>
 <body>
 
@@ -17,18 +16,25 @@
         <div class="signincont">
             
             <div class="buttoncont">
-            <h1>Administrator</h1>
+            <h1>ADMINISTRATOR</h1>
             </div>
     
                 <div class="formcont">
                     <div class="emailcont">
-                        <p>ID</p>
+                        <p>ID Number</p>
                         <input type="text" id="EmailTxtbx" name="Email@gmail.com">
                     </div>
                     <div>
+                        <div class="password-container">
+
                         <p>Password</p>
-                        <input type="password" id="PassTxtbx">
+
                         <span class="toggle-password" onclick="togglePasswordVisibility()">&#x1f441;</span>
+                        
+                        </div>
+</br>
+                        <input type="password" id="PassTxtbx">
+                        
                     </div>
     
                     <script>

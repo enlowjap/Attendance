@@ -1,3 +1,16 @@
+<?php 
+if(isset($message)){
+    foreach($message as $msg){
+       echo '
+       <div class="message">
+          <span>'.$msg.'</span>
+          <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
+       </div>
+       ';
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,8 +36,6 @@
     <div><p>ABOUT</p></div>
     
     <div><p>CONTACT</p></div>
-
-    <div><a href="/SignUp.php"><p>SIGN UP</p></a></div>
     
     <div class="navbuttonend"><a href="/Login.php"><p>SIGN IN</p></a></div>
     </div>

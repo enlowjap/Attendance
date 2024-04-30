@@ -1,5 +1,6 @@
 html{padding: 0;
-    margin: 0;}
+    margin: 0;
+    height: auto}
     
     body{
         margin: 0;
@@ -7,19 +8,24 @@ html{padding: 0;
         height: 100%;
         font-family: Arial;
         background-image: linear-gradient(45deg,   #95BAD5,#00001a);
-        object-fit: cover;
+        background-size: cover;
+        background-repeat: no-repeat;
+        
     }
     
     .centerdiv{
+        margin: 1.5rem 0 0 1.5rem;
+        display: flex;
+        height:auto;
+        width: auto;
+        padding: 0;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100%;
-        margin: 2rem 0 0 2rem;
-        padding: 0;
     }
     
     .container {
+        display: flex;
         padding: 0;
         display: flex;
         flex-direction: row;

@@ -122,7 +122,107 @@ nav ul li a:hover {
     background-color: #fff;
     padding: 20px;
     border-radius: 5px;
+   
 }
+.image-container {
+    width: 470px; /* Set the width as per your requirement */
+    height: 390px; /* Set the height as per your requirement */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+}
+.image-container h2{
+    color: #3A3B3C;
+    
+}
+
+.image-container label {
+    color: #3A3B3C; /* Example text color */
+    font-size: 16px; /* Example font size */
+    margin: 5px 0; /* Adjust vertical spacing between paragraphs */
+    text-align: left;
+}
+/* Initially hide the image container */
+.image-container.hide {
+    display: none;
+}
+
+#routeImage {
+    width: 250px ;
+    height: 180px;
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border-radius: 5px;
+    
+}
+
+.image-container.show {
+    left: 0; /* Slide the image container into the visible area */
+}
+.image-container button{
+    width: 200px;
+    background-color: #3A3B3C;
+    border-radius: 5px;
+}
+
+.postbtn{
+    position: absolute;
+    top: 93%;
+    left: 70%;
+    transform: translate(-50%, -50%);
+    
+}
+
+.route-panel {
+    position: absolute;
+    top: 93%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+}
+
+.route-panel h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.route-panel p {
+    margin-bottom: 10px;
+    color: #666;
+}
+
+.route-panel img {
+    max-width: 100%;
+    border-radius: 5px;
+}
+
+.backbtn{ 
+    position: absolute;
+    top: 93%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+   
+}
+.hide {
+    display: none;
+}
+
+
 
 .popup-content div {
     display: flex;
@@ -154,6 +254,35 @@ nav ul li a:hover {
     border: 1px solid #ccc;
     border-radius: 5px;
 }
+
+/* Add styles for dropdown UI */
+.popup-content select {
+    width: 100%; /* Set width to fill the container */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 35px; /* Set the same height as the label */
+}
+
+/* Style for dropdown arrow */
+.popup-content select::-ms-expand {
+    display: none; /* Hide default arrow in IE10+ */
+}
+
+.popup-content select::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+}
+
+.popup-content select::-webkit-scrollbar-thumb {
+    background-color: #ccc; /* Color of the scrollbar thumb */
+    border-radius: 5px; /* Rounded corners */
+}
+
+.popup-content select:focus {
+    outline: none; /* Remove outline on focus */
+    border-color: #3A3B3C; /* Change border color on focus */
+}
+
 
 
 

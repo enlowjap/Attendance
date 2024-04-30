@@ -1,48 +1,35 @@
 <?php
-
-
 session_start();
 
 include 'dbConnect.php';
 
 $errors = [];
 
-// Update profile image if a new image is uploaded
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
-    // Validate file upload
-    $image = file_get_contents($_FILES["image"]["tmp_name"]);
-    $imageBase64 = base64_encode($image);
-
-    try {
-        $user_id = $_SESSION['user_id']; // Assuming user is logged in
-        $stmt = $conn->prepare("UPDATE users SET profile_image = ? WHERE ID = ?");
-        $stmt->bind_param("si", $imageBase64, $user_id);
-        $stmt->execute();
-
-        if ($stmt->affected_rows > 0) {
-            // Image updated successfully
-            echo "Profile image updated successfully.";
-        } else {
-            $errors[] = "Failed to update profile image.";
-        }
-    } catch (Exception $e) {
-        $errors[] = "Database error: " . $e->getMessage();
-    }
+// Check if file is uploaded successfully
+if (isset($_FILES["postImage"]) && $_FILES["postImage"]["error"] == 0) {
+    $postImage = file_get_contents($_FILES["postImage"]["tmp_name"]);
+    $postImageBase64 = base64_encode($postImage);
+    // Now you can use $postImageBase64 in your SQL query or save it to a directory
 }
+
+
+
 // Fetch user data
-if(isset($_SESSION['user_id'])) {
+if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
 
-    $sql = "SELECT FName, LName, profile_image FROM users WHERE ID = $user_id";
-    $result = $conn->query($sql);
+    $sql = "SELECT FName, LName, profile_image FROM users WHERE ID = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     if ($result) {
         if ($result->num_rows > 0) {
-            // Fetching user data
             $row = $result->fetch_assoc();
             $fname = $row["FName"];
             $lname = $row["LName"];
-            $imageBase64 = $row["profile_image"]; // Retrieve profile image from database
+            $imageBase64 = $row["profile_image"];
         } else {
             $errors[] = "User not found";
         }
@@ -58,8 +45,80 @@ if (!empty($errors)) {
     foreach ($errors as $error) {
         echo "<p>Error: $error</p>";
     }
+} else {
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["postContent"])) {
+        $postContent = $_POST["postContent"];
+        $postLink = isset($_POST["postLink"]) ? $_POST["postLink"] : ""; // Retrieve post link data
+        $currentDateTime = date("Y-m-d H:i:s");
+
+        try {
+          // Handle file upload if an image is selected
+        if (isset($_FILES["postImage"]) && $_FILES["postImage"]["error"] == 0) {
+            $postImage = file_get_contents($_FILES["postImage"]["tmp_name"]);
+            $postImageBase64 = base64_encode($postImage);
+
+            $stmt = $conn->prepare("INSERT INTO posts (ID, content, image, link, created_at) VALUES (?, ?, ?, ?, ?)");
+            $stmt->bind_param("issss", $user_id, $postContent, $postImageBase64, $postLink, $currentDateTime);
+            $stmt->execute();
+        } else {
+            // No image provided, insert data without image
+            $stmt = $conn->prepare("INSERT INTO posts (ID, content, link, created_at) VALUES (?, ?, ?, ?)");
+            $stmt->bind_param("isss", $user_id, $postContent, $postLink, $currentDateTime);
+            $stmt->execute();
+        }
+
+            if ($stmt->affected_rows > 0) {
+                echo "Post saved successfully.";
+
+                // Redirect back to the original page (home2.php) after form submission
+    header("Location: home2.php");
+    exit(); // Ensure no further code execution after the redirect
+            } else {
+                $errors[] = "Failed to save post.";
+            }
+        } catch (Exception $e) {
+            $errors[] = "Database error: " . $e->getMessage();
+        }
+    }
 }
+
+// Fetch existing posts from the database
+$posts = [];
+$sql = "SELECT p.ID as post_id, p.content, p.image, p.link, p.created_at, u.FName, u.LName, u.profile_image
+        FROM posts p
+        JOIN users u ON p.ID = u.ID
+        ORDER BY p.created_at DESC"; // Assuming your posts table has columns for user ID, content, image, link, and creation timestamp
+$result = $conn->query($sql);
+
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $posts[] = $row;
+    }
+} else {
+    $errors[] = "No posts found.";
+}
+
+// Display errors
+if (!empty($errors)) {
+    foreach ($errors as $error) {
+        echo "<p>Error: $error</p>";
+    }
+} else {
+    // Display posts
+    // foreach ($posts as $post) {
+    //     echo "<div class='post-item'>";
+    //     echo "<img src='data:image/jpeg;base64," . $post['image'] . "' alt='Post Image'>";
+    //     echo "<p>{$post['content']}</p>";
+    //     echo "<p><strong>{$post['FName']} {$post['LName']}</strong></p>";
+    //     echo "<a href='{$post['link']}' target='_blank'>{$post['link']}</a>";
+    //     echo "<p>{$post['created_at']}</p>";
+    //     echo "</div>";
+    // }
+}
+
+
 ?>
+
 
 
 <!DOCTYPE html>
@@ -327,6 +386,16 @@ if (!empty($errors)) {
         text-align: left; /* Align text to the left */
         background-color: rgb(58, 59, 60);
     }
+    .post-info {
+    margin-bottom: 10px;
+    text-align: center; /* Center the name and date/time */
+    }
+
+    .name-label, .date-label {
+        color: white;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
     .post-item img {
         max-width: 100%;
         height: 500px; /* Adjusted height for better symmetry */
@@ -336,6 +405,8 @@ if (!empty($errors)) {
         cursor: pointer; /* Add cursor pointer to indicate clickability */
         
     }
+
+    
     .post-item .post-link {
         font-size: 14px;
         margin-top: 10px;
@@ -368,10 +439,11 @@ if (!empty($errors)) {
         transition: box-shadow 0.3s ease, background-color 0.3s ease; /* Add transition for smooth hover effect */
     }
 
-    .post-item .action-btn:hover { 
+    .post-item .action-btn:hover {
         background-color: rgb(78, 79, 80); /* Change background color on hover */
         box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Add box shadow on hover */
     }
+    
     /* Add these styles to your existing CSS */
     .avatar-circle {
     width: 28px;
@@ -381,8 +453,9 @@ if (!empty($errors)) {
     display: inline-block;
     vertical-align: middle; /* Align the circle vertically */
     margin-right: 5px;
+    overflow: hidden; /* Ensure the image stays within the circle */
+    object-fit: cover; /* Scale the image to cover the entire circle */
     }
-
     .name-label {
         display: inline-block;
         color: #fff;
@@ -437,8 +510,9 @@ if (!empty($errors)) {
 <body>
          <!-- Navbar -->
     <nav id="navbar" class="navbar">
-        <a href="Home.php">Home</a>
+        <a href="home2.php">Home</a>
         <a href="UserProfile.php">Profile</a>
+        <a href="Login.php">Logout</a>
        <!-- <a href="#Discussion Board">Services</a>-->
         
     </nav>
@@ -475,23 +549,37 @@ if (!empty($errors)) {
             </div>
 
             <div class="post-panel">
-                <textarea id="postContent" placeholder="Write your post here..."></textarea>
-                <!-- File input with custom styling -->
-            <div class="file-input">
-                <label for="postImage">Choose Image</label>
-                <input type="file" id="postImage" accept="image/*" onchange="displayFileName()">
-                <span class="file-name" id="fileName">No file chosen</span>
-            </div>
-            <br>
-                <input type="text" id="postLink" placeholder="Paste link here (optional)">
-                <button type="submit" onclick="postContent()">Post</button>
+            <form method="POST" action="" id="postForm" enctype="multipart/form-data">
+    <textarea id="postContent" name="postContent" placeholder="Write your post here..." required></textarea>
+    <!-- File input with custom styling -->
+    <div class="file-input">
+        <label for="postImage" >Choose Image</label>
+        <input type="file" id="postImage" name="postImage" accept="image/*" required>
+    </div>
+    <br>
+    <input type="text" id="postLink" name="postLink" placeholder="Paste link here (optional)">
+    <button type="submit" form="postForm">Post</button>
+
+</form>
             </div>
 
             <ul class="post-list" id="postList">
-                <!-- Posts will be added here dynamically -->
-            </ul>
+    <!-- Loop through posts and create post items -->
+    <?php foreach ($posts as $post): ?>
+        <li class="post-item">
+            <div class="post-info">
+                <p class="name-label"><?= $post['FName'] ?> <?= $post['LName'] ?></p>
+                <p class="date-label"><?= $post['created_at'] ?></p>
+            </div>
+            <img src="data:image/jpeg;base64,<?= $post['image'] ?>" alt="Post Image">
+            <div class="post-content">
+                <p><?= $post['content'] ?></p>
+                <a href="<?= $post['link'] ?>" target="_blank" class="post-link"><?= $post['link'] ?></a>
+            </div>
+        </li>
+    <?php endforeach; ?>
+</ul>
 
-           
 
             <!-- The Modal -->
             <div id="imageModal" class="modal">
@@ -499,33 +587,33 @@ if (!empty($errors)) {
                 <img class="modal-content" id="fullImage">
             </div>
 
-<script>
-            // Get the modal
-            var modal = document.getElementById('imageModal');
+            <script>
+        // Get the modal
+        var modal = document.getElementById('imageModal');
 
-            // Get the image and set it inside the modal
-            var img = document.getElementById('fullImage');
-            var modalImg = document.getElementById('fullImage');
+        // Get the image and set it inside the modal
+        var img = document.getElementById('fullImage');
+        var modalImg = document.getElementById('fullImage');
 
-            // Function to display the modal with the clicked image
-            function displayModal(imageSrc) {
-                modal.style.display = 'block';
-                modalImg.src = imageSrc;
+        // Function to display the modal with the clicked image
+        function displayModal(imageSrc) {
+            modal.style.display = 'block';
+            modalImg.src = imageSrc;
+        }
+
+        // Function to close the modal
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        // Event listener to close the modal when pressing Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
             }
+        });
 
-            // Function to close the modal
-            function closeModal() {
-                modal.style.display = 'none';
-            }
-
-            // Event listener to close the modal when pressing Escape key
-            document.addEventListener('keydown', function(event) {
-                if (event.key === 'Escape') {
-                    closeModal();
-                }
-            });
-
-            function postContent() {
+        function postContent() {
     // Get the post content from the textarea
     var postContent = document.getElementById('postContent').value;
     var postImage = document.getElementById('postImage').files[0];
@@ -540,14 +628,19 @@ if (!empty($errors)) {
         var postId = 'post_' + Date.now(); // Example: post_1648843762671
         postItem.id = postId;
 
+        // Get profile picture and name values from PHP
+        var profilePicUrl = '<?php echo !empty($imageBase64) ? "data:image/jpeg;base64," . $imageBase64 : "default_profile.jpg"; ?>';
+        var fullName = '<?php echo $fname . " " . $lname; ?>';
+        var userID = <?php echo $user_id; ?>; // Assuming $user_id is set in your PHP code
+
         // Create a circle element for the avatar
         var avatarCircle = document.createElement('div');
         avatarCircle.className = 'avatar-circle';
         postItem.appendChild(avatarCircle);
-
-        // Create a label for the name
-        var nameLabel = document.createElement('p');
-        nameLabel.textContent = 'Name';
+        
+         // Create a label for the name
+         var nameLabel = document.createElement('p');
+        nameLabel.textContent = fullName;
         nameLabel.className = 'name-label';
         postItem.appendChild(nameLabel);
 
@@ -556,88 +649,106 @@ if (!empty($errors)) {
         textParagraph.textContent = postContent;
         postItem.appendChild(textParagraph);
 
-        // Create a link element if a link is provided
-        if (postLink.trim() !== '') {
-            var linkElement = document.createElement('a');
-            linkElement.href = postLink.trim();
-            linkElement.textContent = 'Link: ' + postLink.trim();
-            linkElement.className = 'post-link'; // Add a class for styling
-            linkElement.target = '_blank';
-            postItem.appendChild(linkElement);
+        // Create an image element for the profile picture
+        var avatarImg = document.createElement('img');
+        avatarImg.src = profilePicUrl;
+        avatarImg.alt = 'Profile Picture';
+        avatarImg.style.width = '100%'; // Ensure the image fills the circle
+        avatarImg.style.height = '100%'; // Ensure the image fills the circle
+        avatarCircle.appendChild(avatarImg);
+
+                // Upload the image using AJAX if it's selected
+                if (postImage) {
+                    var formData = new FormData();
+                    formData.append('userID', userID);
+                    formData.append('postContent', postContent);
+                    formData.append('postImage', postImage);
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', '', true); // Adjust the URL to match your PHP script
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            console.log(xhr.responseText);
+                        }
+                    };
+                    xhr.send(formData); // Make sure formData contains the correct data
+                }
+
+                // Create a link element if a link is provided
+                if (postLink.trim() !== '') {
+                    var linkElement = document.createElement('a');
+                    linkElement.href = postLink.trim();
+                    linkElement.textContent = 'Link: ' + postLink.trim();
+                    linkElement.className = 'post-link'; // Add a class for styling
+                    linkElement.target = '_blank';
+                    postItem.appendChild(linkElement);
+                }
+
+                // Create an image element for the uploaded image and add it to the post item
+                if (postImage) {
+                    var imageElement = document.createElement('img');
+                    imageElement.src = URL.createObjectURL(postImage);
+                    imageElement.alt = 'Uploaded Image';
+                    imageElement.onclick = function() {
+                        displayModal(this.src); // Display the full image in the modal
+                    };
+                    postItem.appendChild(imageElement);
+                }
+
+                // Create an action panel for Like, Comment, and Copy Link buttons
+                var actionPanel = document.createElement('div');
+                actionPanel.className = 'action-panel';
+
+                // Create Like button
+                var likeButton = document.createElement('button');
+                likeButton.textContent = 'Like';
+                likeButton.className = 'action-btn';
+                likeButton.onclick = function() {
+                    likePost(postId); // Pass the postId to the likePost function
+                };
+                actionPanel.appendChild(likeButton);
+
+                // Create Comment button
+                var commentButton = document.createElement('button');
+                commentButton.textContent = 'Comment';
+                commentButton.className = 'action-btn';
+                actionPanel.appendChild(commentButton);
+
+                // Create Copy Link button
+                var copyLinkButton = document.createElement('button');
+                copyLinkButton.textContent = 'Copy Link';
+                copyLinkButton.className = 'action-btn';
+                actionPanel.appendChild(copyLinkButton);
+
+                // Add action panel to the post item
+                postItem.appendChild(actionPanel);
+
+                // Get the post list
+                var postList = document.getElementById('postList');
+
+                // Insert the new post item at the beginning of the post list
+                postList.insertBefore(postItem, postList.firstChild);
+
+                // Clear the textarea, image input, and link input
+                document.getElementById('postContent').value = '';
+                document.getElementById('postImage').value = ''; // Clear the file input
+                document.getElementById('postLink').value = '';
+            } else {
+                alert('Please enter some content, upload an image, or provide a link for your post.');
+            }
         }
 
-        // Create an image element for the uploaded image and add it to the post item
-        if (postImage) {
-            var imageElement = document.createElement('img');
-            imageElement.src = URL.createObjectURL(postImage);
-            imageElement.alt = 'Uploaded Image';
-            imageElement.onclick = function() {
-                displayModal(this.src); // Display the full image in the modal
-            };
-            postItem.appendChild(imageElement);
-        }
-
-        // Create an action panel for Like, Comment, and Copy Link buttons
-        var actionPanel = document.createElement('div');
-        actionPanel.className = 'action-panel';
-
-        // Create Like button
-        var likeButton = document.createElement('button');
-        likeButton.textContent = 'Like';
-        likeButton.className = 'action-btn';
-        likeButton.onclick = function() {
-            likePost(postId); // Pass the postId to the likePost function
-        };
-        actionPanel.appendChild(likeButton);
-
-        // Create Comment button
-        var commentButton = document.createElement('button');
-        commentButton.textContent = 'Comment';
-        commentButton.className = 'action-btn';
-        actionPanel.appendChild(commentButton);
-
-        // Create Copy Link button
-        var copyLinkButton = document.createElement('button');
-        copyLinkButton.textContent = 'Copy Link';
-        copyLinkButton.className = 'action-btn';
-        actionPanel.appendChild(copyLinkButton);
-
-        // Add action panel to the post item
-        postItem.appendChild(actionPanel);
-
-        // Get the post list
-        var postList = document.getElementById('postList');
-
-        // Insert the new post item at the beginning of the post list
-        postList.insertBefore(postItem, postList.firstChild);
-
-        // Clear the textarea, image input, and link input
-        document.getElementById('postContent').value = '';
-        document.getElementById('postImage').value = ''; // Clear the file input
-        document.getElementById('postLink').value = '';
-
-        // Update the file name display to show 'No file chosen'
-        document.getElementById('fileName').textContent = 'No file chosen';
-    } else {
-        alert('Please enter some content, upload an image, or provide a link for your post.');
-    }
-}
-
-
-
-            function likePost(postId) {
-                var postItem = document.getElementById(postId);
-                if (postItem) {
-                    var likeButton = postItem.querySelector('.like-btn');
-                    if (likeButton) {
-                        likeButton.textContent = 'Liked';
-                        likeButton.disabled = true;
-                    }
+        function likePost(postId) {
+            var postItem = document.getElementById(postId);
+            if (postItem) {
+                var likeButton = postItem.querySelector('.like-btn');
+                if (likeButton) {
+                    likeButton.textContent = 'Liked';
+                    likeButton.disabled = true;
                 }
             }
-
-</script>
-
+        }
+    </script>
 <script>
         window.onscroll = function() { stickyNavbar() };
 

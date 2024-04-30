@@ -10,6 +10,7 @@ try {
             $pass = filter_var($_POST['Pass'], FILTER_SANITIZE_STRING);
             $gender = $_POST['gender'];
             $birthday =$_POST['selected_date'];
+            $formatted_birthday = date('Y-m-d', strtotime($birthday));
     
             $find_email = $conn->prepare("SELECT * FROM users WHERE email = ?");
             $find_email->bind_param("s", $email);
@@ -23,6 +24,7 @@ try {
                 $insert_user->bind_param("ssssss", $fname, $lname, $gender, $birthday, $email, $pass);
                 if ($insert_user->execute()) {
                     $message[] = 'Account Created!';
+                    header('location:Login.php');
                 } else {
                     $message[] = 'Error: Account creation failed.';
                 }
@@ -52,7 +54,7 @@ try {
     include 'navigationheader.php';
 ?>
 
-<form action="" method="post" >
+
 <div class="centerdiv">
 <div class="container">
 
@@ -65,6 +67,8 @@ try {
             <a href="/Login.php"><button class="sgnIn">Sign In</button></a>
         </div>
 
+
+        <form action="" method="post" >
             <div class="formcont">
                 <div>
                     <p>First Name</p>

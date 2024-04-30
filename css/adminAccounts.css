@@ -1,0 +1,277 @@
+body, html {
+    font-family:Arial;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+.container {
+    display: flex;
+    height: 100%;
+}
+.sidebar {
+    width: 180px;
+    background-color: rgb(36, 37, 38);
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.content {
+    flex: 1;
+    padding: 20px;
+    background-color: #3A3B3C;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.panel {
+    width: 950px;
+    height: 450px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+}
+.panel-title {
+    color: #fff;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    margin: 0;
+}
+.tabs {
+    display: flex;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+.tab {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px 5px 0 0;
+    cursor: pointer;
+    margin-right: 10px;
+}
+.tab.active {
+    background-color: #0056b3;
+}
+.tab-content {
+    height:auto;
+    overflow:scroll;
+    padding: 20px;
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+.tab-content.active {
+    display: block;
+}
+.postbtn {
+    margin-top: 25px;
+    padding: 10px 20px;
+    width: 180px;
+    background-color:  rgb(36, 37, 38);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}    
+.Accbtn {
+    margin-top: 16px;
+    padding: 10px 20px;
+    width: 180px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.logout-button {
+    margin-top: 22.5rem;
+    width: 180px;
+    background-color: rgb(36, 37, 38);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.add-btn {
+    display:block;
+    top: 20px;
+    right: 20px;
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin:0;
+}
+.add-btn:hover {
+    background-color: #218838;
+}
+
+table {
+    margin-top:10px;
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+th {
+    background-color: #f2f2f2;
+}
+th:first-child, td:first-child {
+    border-left: none;
+}
+th:last-child, td:last-child {
+    border-right: none;
+}
+tr:hover {
+    background-color: #f5f5f5;
+}
+h2 {
+    color: #fff;
+}
+
+.containerr {
+max-width: 800px;
+margin: 5px auto;
+padding: 20px;
+}
+
+.containerr h1 {
+text-align: center;
+}
+
+.containerr table {
+width: 100%;
+border-collapse: collapse;
+}
+
+.containerr table th, table td {
+padding: 10px;
+text-align: left;
+border-bottom: 1px solid #ddd;
+}
+
+.containerr table th {
+background-color: #f2f2f2;
+}
+
+.containerr table tr:nth-child(even) {
+background-color: #f9f9f9;
+}
+
+.message{
+    position: fixed;
+    top:0;
+    margin:0 auto;
+    background-color: white;
+    padding:2rem;
+    display: flex;
+    align-items: center;
+    gap:1rem;
+    justify-content: space-between;
+    animation: hideMessage 3.5s forwards;
+ }
+
+ .message.hide {
+    display: none;
+}
+ 
+ .message.form{
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: var(--white);
+    top: 2rem;
+    border-radius: .5rem;
+ }
+
+ @keyframes hideMessage {
+    0% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; display: none; }
+}
+ 
+ .message span{
+    font-size: 2rem;
+    color:var(--black);
+ }
+ 
+ .message i{
+    font-size: 2.5rem;
+    color:var(--red);
+    cursor: pointer;
+    transition: .2s linear;
+ }
+ 
+ .message i:hover{
+    transform: rotate(90deg);
+ }
+
+/* Popup container */
+.formm-popup {
+display: none;
+position: fixed;
+bottom: 0;
+right: 15px;
+border: 3px solid #f1f1f1;
+z-index: 9;
+}
+
+/* Add styles to the form container */
+.formm-container {
+max-width: 300px;
+padding: 20px;
+background-color: white;
+}
+
+/* Full-width input fields */
+.formm-container input[type=text], .formm-container input[type=password], .formm-container input[type=email], .formm-container select, .formm-container input[type=date] {
+width: 100%;
+padding: 10px;
+margin: 5px 0 10px 0;
+border: none;
+background: #f1f1f1;
+}
+
+/* When the inputs get focus, do something */
+.formm-container input[type=text]:focus, .formm-container input[type=password]:focus, .formm-container input[type=email]:focus, .formm-container select:focus, .formm-container input[type=date]:focus {
+background-color: #ddd;
+outline: none;
+}
+
+/* Set a style for the submit button */
+.formm-container .btn {
+background-color: #4CAF50;
+color: white;
+padding: 16px 20px;
+border: none;
+cursor: pointer;
+width: 100%;
+margin-bottom: 10px;
+opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.formm-container .cancel {
+background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.formm-container .btn:hover, .open-button:hover {
+opacity: 1;
+}

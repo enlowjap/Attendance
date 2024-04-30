@@ -1,5 +1,7 @@
 html{padding: 0;
-    margin: 0;}
+    margin: 0;
+    height: 100%;
+}
     
     body{
         margin: 0;
@@ -7,7 +9,8 @@ html{padding: 0;
         height: 100%;
         font-family: Arial;
         background-image: linear-gradient(45deg,   #95BAD5,#00001a);
-        object-fit: cover;
+        background-size: cover;
+        background-repeat: no-repeat;
     }
     
     .centerdiv{
@@ -78,6 +81,15 @@ html{padding: 0;
         margin-top: 1.5rem;
     }
 
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;}
+
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+
     .password-container {
         flex-direction: row;
         display: flex;
@@ -135,3 +147,50 @@ html{padding: 0;
         height: 100%;
         object-fit: cover;
     }
+
+    .message{
+        position: fixed;
+        top:0;
+        margin:0 auto;
+        background-color: var(--light-bg);
+        padding:2rem;
+        display: flex;
+        align-items: center;
+        gap:1rem;
+        justify-content: space-between;
+        animation: hideMessage 3.5s forwards;
+     }
+
+     .message.hide {
+        display: none;
+    }
+     
+     .message.form{
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: var(--white);
+        top: 2rem;
+        border-radius: .5rem;
+     }
+
+     @keyframes hideMessage {
+        0% { opacity: 1; }
+        90% { opacity: 1; }
+        100% { opacity: 0; display: none; }
+    }
+     
+     .message span{
+        font-size: 2rem;
+        color:var(--black);
+     }
+     
+     .message i{
+        font-size: 2.5rem;
+        color:var(--red);
+        cursor: pointer;
+        transition: .2s linear;
+     }
+     
+     .message i:hover{
+        transform: rotate(90deg);
+     }

@@ -1,3 +1,38 @@
+<?php 
+$db_name = 'siklistadb';
+$user_name = 'root';
+$user_password = '';
+
+$conn = new mysqli('localhost', $user_name, $user_password, $db_name);
+if ($conn->connect_error) {
+    die('Connection failed: ' . $conn->connect_error);
+}
+
+try {
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+        $idnum = filter_var($_POST['AdminID'], FILTER_SANITIZE_NUMBER_INT);
+        $pass = filter_var($_POST['pass'], FILTER_SANITIZE_STRING);
+
+        $find_user = $conn->prepare("SELECT * FROM administrator WHERE ID = ? AND Password = ? LIMIT 1");
+        $find_user->bind_param("is", $idnum,$pass);
+        $find_user->execute();
+        $result = $find_user->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+                setcookie('ID',$row['ID'], time() + 60*60*24*30, '/');
+                header('location:Postmanagement.php');
+            }else{
+                $message[] = 'Incorrect ID number or Password';
+            }
+        }
+    } catch (PDOException $e) {
+        echo 'Error: ' . $e->getMessage();
+    }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +43,24 @@
     <link rel="stylesheet" href="/css/AdminLogin.css">
 </head>
 <body>
-
+<?php if(isset($message)){
+    foreach($message as $msg){
+       echo '
+       <div class="message">
+          <span>'.$msg.'</span>
+          <i class="fas fa-times" onclick="removeMessage(this.parentElement);"></i>
+       </div>
+       ';
+    }
+}?>
+<script>
+    function removeMessage(element) 
+        {
+        element.classList.add("hide");
+    }
+    
+</script>
+<form method="POST" action="">
     <div class="centerdiv">
     <div class="container">
 
@@ -22,7 +74,7 @@
                 <div class="formcont">
                     <div class="emailcont">
                         <p>ID Number</p>
-                        <input type="text" id="EmailTxtbx" name="Email@gmail.com">
+                        <input type="number" name="AdminID" required>
                     </div>
                     <div>
                         <div class="password-container">
@@ -33,7 +85,7 @@
                         
                         </div>
 </br>
-                        <input type="password" id="PassTxtbx">
+                        <input type="password" name="pass" id="PassTxtbx" recquired>
                         
                     </div>
     
@@ -53,14 +105,13 @@
                     </script>
     
                     <div class="sgnUPcont">
-                        <a href="/Postmanagement.php">
-                            <button   class="sgnUP">LOG IN</button>
-                        </a>
+                            <button type="submit"   class="sgnUP">LOG IN</button>
                     </div>
                 </div>
             
         </div>
     </div>
 </div>
+</form>
 </body>
 </html>

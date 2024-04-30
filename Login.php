@@ -1,41 +1,54 @@
 <?php
+session_start();
+
 include 'dbConnect.php';
 
-if(isset($message)){
-    foreach($message as $msg){
-       echo '
-       <div class="message">
-          <span>'.$msg.'</span>
-          <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
-       </div>
-       ';
+// Initialize an array to store error messages
+$errors = [];
+
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Sanitize and validate email
+    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+    if (!$email) {
+        $errors[] = "Invalid email format";
+    }
+
+    // Sanitize password (you may want to hash the password securely before storing it in the database)
+    $password = filter_input(INPUT_POST, 'pass', FILTER_SANITIZE_STRING);
+
+    // Proceed with login if there are no errors
+    if (empty($errors)) {
+        try {
+            // Prepare and execute SQL statement
+            $find_user = $conn->prepare("SELECT * FROM users WHERE email = ? AND password = ? LIMIT 1");
+            $find_user->bind_param("ss", $email, $password);
+            $find_user->execute();
+            $result = $find_user->get_result();
+
+            if ($result->num_rows > 0) {
+                // If login is successful, set session variables and redirect
+                $row = $result->fetch_assoc();
+                $_SESSION['user_id'] = $row['ID'];
+                header('location: home2.php');
+                exit;
+            } else {
+                $errors[] = 'Incorrect Email or Password';
+            }
+        } catch (PDOException $e) {
+            $errors[] = 'Database error: ' . $e->getMessage();
+        }
     }
 }
 
- try {
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-        $email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
-        $pass = filter_var($_POST['pass'], FILTER_SANITIZE_STRING);
-
-        $find_user = $conn->prepare("SELECT * FROM users WHERE email = ? AND password = ? LIMIT 1");
-        $find_user->bind_param("ss", $email,$pass);
-        $find_user->execute();
-        $result = $find_user->get_result();
-
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-                setcookie('ID',$row['ID'], time() + 60*60*24*30, '/');
-                header('location:Home.php');
-            }else{
-                $message[] = 'Incorrect Email or Password';
-            }
-        }
-    } catch (PDOException $e) {
-        echo 'Error: ' . $e->getMessage();
+// Display error messages if any
+if (!empty($errors)) {
+    foreach ($errors as $error) {
+        echo '<div class="message"><span>' . $error . '</span><i class="fas fa-times" onclick="this.parentElement.remove();"></i></div>';
     }
+}
+?>
 
-    ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -50,7 +63,7 @@ if(isset($message)){
 <?php
     include 'navigationheader.php';
 ?>
-<form action="" method="post" >
+
     <div class="centerdiv">
     <div class="container">
 
@@ -61,7 +74,7 @@ if(isset($message)){
             
             <a href="/Login.php"><button class="sgnIn">Sign In</button></a>
             </div>
-    
+            <form action="" method="post" >
                 <div class="formcont">
                 <div class="emailcont">
                     <p>Email</p>
@@ -87,7 +100,7 @@ if(isset($message)){
                                 toggleIcon.textContent = '🔒';
                             }
                         }
-
+                                                    
                             document.getElementById('EmailTxtbx').addEventListener('input', function() {
                                 var emailInput = document.getElementById('EmailTxtbx');
                                 var emailError = document.getElementById('emailError');
@@ -100,9 +113,7 @@ if(isset($message)){
                     </script>
     
                     <div class="sgnUPcont">
-                        <a href="/Home.php">
                             <button  type="submit" class="sgnUP">SIGN IN</button>
-                        </a>
                     </div>
                 </div>
             

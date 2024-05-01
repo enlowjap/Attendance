@@ -1,9 +1,14 @@
 <?php
 session_start();
 
+// Set the time zone to Asia/Manila
+date_default_timezone_set('Asia/Manila');
+
 include 'dbConnect.php';
 
 $errors = [];
+
+
 
 // Check if file is uploaded successfully
 if (isset($_FILES["postImage"]) && $_FILES["postImage"]["error"] == 0) {
@@ -22,7 +27,7 @@ if (isset($_SESSION['user_id'])) {
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    $result = $stmt->get_result();
+    $result = $stmt->get_result();      
 
     if ($result) {
         if ($result->num_rows > 0) {
@@ -80,11 +85,11 @@ if (!empty($errors)) {
             $errors[] = "Database error: " . $e->getMessage();
         }
     }
-}
+}   
 
 // Fetch existing posts from the database
 $posts = [];
-$sql = "SELECT p.ID as post_id, p.content, p.image, p.link, p.created_at, u.FName, u.LName, u.profile_image
+$sql = "SELECT p.ID as content_id, p.content, p.image, p.link, p.created_at, u.FName, u.LName, u.profile_image
         FROM posts p
         JOIN users u ON p.ID = u.ID
         ORDER BY p.created_at DESC"; // Assuming your posts table has columns for user ID, content, image, link, and creation timestamp
@@ -92,19 +97,17 @@ $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
+        $row['postId'] = 'post_' . $row['content_id']; // Generate postId dynamically
         $posts[] = $row;
     }
-} else {
-    $errors[] = "No posts found.";
 }
-
 // Display errors
 if (!empty($errors)) {
     foreach ($errors as $error) {
         echo "<p>Error: $error</p>";
     }
 } else {
-    // Display posts
+    // // Display posts
     // foreach ($posts as $post) {
     //     echo "<div class='post-item'>";
     //     echo "<img src='data:image/jpeg;base64," . $post['image'] . "' alt='Post Image'>";
@@ -388,13 +391,17 @@ if (!empty($errors)) {
     }
     .post-info {
     margin-bottom: 10px;
-    text-align: center; /* Center the name and date/time */
+    text-align: left; /* Center the name and date/time */
     }
-
-    .name-label, .date-label {
+    .date-label {
+        color: #A5A8AC;
+        font-size: 12px;
+        margin-top: 2px;
+    }
+    .name-label {
         color: white;
         font-size: 14px;
-        margin-bottom: 5px;
+        margin-bottom: 0px;
     }
     .post-item img {
         max-width: 100%;
@@ -406,7 +413,6 @@ if (!empty($errors)) {
         
     }
 
-    
     .post-item .post-link {
         font-size: 14px;
         margin-top: 10px;
@@ -445,22 +451,30 @@ if (!empty($errors)) {
     }
     
     /* Add these styles to your existing CSS */
+   
     .avatar-circle {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background-color: #fff;
-    display: inline-block;
-    vertical-align: middle; /* Align the circle vertically */
-    margin-right: 5px;
-    overflow: hidden; /* Ensure the image stays within the circle */
-    object-fit: cover; /* Scale the image to cover the entire circle */
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background-color: #fff;
+        display: inline-block;
+        vertical-align: middle; /* Align the circle vertically */
+        margin-right: 0px;
+        overflow: hidden; /* Ensure the image stays within the circle */
+        object-fit: cover; /* Scale the image to cover the entire circle */
     }
     .name-label {
         display: inline-block;
         color: #fff;
         font-size: 14px;
         vertical-align: middle; /* Align the label vertically */
+        padding-right: 30px;
+       margin-top: 0px;
+    }
+    .avatar-circle img{
+        width: 100%;
+        height: 100%;
+
     }
 
     /* Modal Styling */
@@ -549,36 +563,51 @@ if (!empty($errors)) {
             </div>
 
             <div class="post-panel">
-            <form method="POST" action="" id="postForm" enctype="multipart/form-data">
-    <textarea id="postContent" name="postContent" placeholder="Write your post here..." required></textarea>
-    <!-- File input with custom styling -->
-    <div class="file-input">
-        <label for="postImage" >Choose Image</label>
-        <input type="file" id="postImage" name="postImage" accept="image/*" required>
-    </div>
-    <br>
-    <input type="text" id="postLink" name="postLink" placeholder="Paste link here (optional)">
-    <button type="submit" form="postForm">Post</button>
+                <form method="POST" action="" id="postForm" enctype="multipart/form-data">
+                <textarea id="postContent" name="postContent" placeholder="Write your post here..."></textarea>
+                <!-- File input with custom styling -->
+                <div class="file-input">
+                    <label for="postImage">Choose Image</label>
+                    <input type="file" id="postImage" name="postImage" accept="image/*">
+                </div>
+                <br>
+                <input type="text" id="postLink" name="postLink" placeholder="Paste link here (optional)">
+                <button type="submit" form="postForm">Post</button>
 
-</form>
+            </form>
+
             </div>
 
             <ul class="post-list" id="postList">
-    <!-- Loop through posts and create post items -->
-    <?php foreach ($posts as $post): ?>
-        <li class="post-item">
-            <div class="post-info">
-                <p class="name-label"><?= $post['FName'] ?> <?= $post['LName'] ?></p>
-                <p class="date-label"><?= $post['created_at'] ?></p>
-            </div>
-            <img src="data:image/jpeg;base64,<?= $post['image'] ?>" alt="Post Image">
-            <div class="post-content">
-                <p><?= $post['content'] ?></p>
-                <a href="<?= $post['link'] ?>" target="_blank" class="post-link"><?= $post['link'] ?></a>
-            </div>
-        </li>
-    <?php endforeach; ?>
-</ul>
+                <!-- Loop through posts and create post items -->
+                <?php foreach ($posts as $post): ?>
+                    <li class="post-item">
+                        <div class="post-info">
+                             <div class="avatar-circle">
+                                <!-- Profile picture will be added here -->
+                                <img src="<?php echo !empty($imageBase64) ? "data:image/jpeg;base64," . $imageBase64 : "default_profile.jpg"; ?>" alt="Profile Picture">
+                            </div>
+                            <p class="name-label"><?= $post['FName'] ?> <?= $post['LName'] ?></p>
+                            <p class="date-label"><?= date('M d, Y h:i:s A', strtotime($post['created_at'])) ?></p>
+                        </div>
+                        <div class="post-content">
+                            <p><?= $post['content'] ?></p>
+                            <a href="<?= $post['link'] ?>" target="_blank" class="post-link"><?= $post['link'] ?></a>
+                        </div>
+                        <img src="data:image/jpeg;base64,<?= $post['image'] ?>" alt="Post Image">
+                        
+                        <span id="likeCount"></span> Likes
+
+                        <!-- Action Panel -->
+                        <div class="action-panel">
+                        <!-- <button class="action-btn" id="likeBtn" onclick="likePost(this)" data-postid="<?php echo $post['content_id']; ?>">Like</button> -->
+                        <button class="action-btn" id="likeBtn" onclick="likePost(this)" data-postid="<?php echo $post['content_id']; ?>">Like</button>
+                        <button class="action-btn">Comment</button>
+                        <button class="action-btn">Copy Link</button>
+                        </div>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
 
 
             <!-- The Modal -->
@@ -586,6 +615,8 @@ if (!empty($errors)) {
                 <span class="close" onclick="closeModal()">&times;</span>
                 <img class="modal-content" id="fullImage">
             </div>
+
+            
 
             <script>
         // Get the modal
@@ -612,6 +643,43 @@ if (!empty($errors)) {
                 closeModal();
             }
         });
+
+        function likePost(btnElement) {
+    var postId = btnElement.getAttribute('data-postid');
+    console.log('Post ID:', postId); // Debugging: Log postId
+
+    if (postId) {
+        var formData = new FormData();
+        formData.append('postId', postId);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'like_unlike_post.php', true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log('Response:', xhr.responseText); // Debugging: Log response
+                var response = xhr.responseText;
+                if (response === 'success') {
+                    // Update like count on the page
+                    var likeCountSpan = document.getElementById('likeCount_' + postId);
+                    if (likeCountSpan) {
+                        var currentCount = parseInt(likeCountSpan.textContent);
+                        likeCountSpan.textContent = currentCount + 1;
+                    } else {
+                        alert('Failed to update like count on the page.');
+                    }
+                } else if (response === 'already_liked') {
+                    alert('You have already liked this post.');
+                } else {
+                    alert('Failed to like the post.');
+                }
+            }
+        };
+        xhr.send(formData);
+    } else {
+        alert('Error: Post ID not found.');
+    }
+}
+
 
         function postContent() {
     // Get the post content from the textarea
@@ -699,13 +767,12 @@ if (!empty($errors)) {
                 var actionPanel = document.createElement('div');
                 actionPanel.className = 'action-panel';
 
-                // Create Like button
+              
+                // Generate Like button with dynamic postId
                 var likeButton = document.createElement('button');
                 likeButton.textContent = 'Like';
-                likeButton.className = 'action-btn';
-                likeButton.onclick = function() {
-                    likePost(postId); // Pass the postId to the likePost function
-                };
+                likeButton.className = 'action-btn likeBtn';
+                likeButton.setAttribute('onclick', 'likePost("' + post['postId'] + '")');
                 actionPanel.appendChild(likeButton);
 
                 // Create Comment button
@@ -738,17 +805,17 @@ if (!empty($errors)) {
             }
         }
 
-        function likePost(postId) {
-            var postItem = document.getElementById(postId);
-            if (postItem) {
-                var likeButton = postItem.querySelector('.like-btn');
-                if (likeButton) {
-                    likeButton.textContent = 'Liked';
-                    likeButton.disabled = true;
-                }
-            }
-        }
+        // let likeCount = 0;
+
+        // function likePost() {
+        
+        //     likeCount++;
+            
+        //     document.getElementById('likeCount').textContent = likeCount;
+        // }
+
     </script>
+    
 <script>
         window.onscroll = function() { stickyNavbar() };
 

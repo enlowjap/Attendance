@@ -29,8 +29,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($result->num_rows > 0) {
                 // If login is successful, set session variables and redirect
                 $row = $result->fetch_assoc();
+                setcookie('ID',$row['ID'], time() + 60*60*24*30, '/');
                 $_SESSION['user_id'] = $row['ID'];
-                header('location: home2.php');
+                header('location: ../adminpages/testaccountcomplaint.php');
                 exit;
             } else {
                 $errors[] = 'Incorrect Email or Password';

@@ -11,8 +11,8 @@ body{
     margin: 0;
     padding: 0;
     height:3.7rem;
-    background-image: radial-gradient(circle at top left, #a2cbe9,#95BAD5, #3A3B3C, #292a2b, #202122);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    background-image: radial-gradient(circle at top left, #F5EFE6,#E8DFCA, #4F6F52, #315034, #1A4D2E);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .5);
 }
 
 .navbar{
@@ -46,12 +46,13 @@ body{
 
 .imglogo a p{
     font-size: medium;
+    color:#164127;
 }
 
 .navbutton{
     display: flex;
     flex-direction: row;
-    padding: .1rem 0 .1rem 0;
+    padding: .5rem 0 .5rem 0;
 }
 
 .navbutton div{
@@ -66,7 +67,7 @@ body{
 }
 
 .navbutton div:hover{
-    background-color:#3A3B3C ;
+    background-color:#1A4D2E ;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     cursor: pointer;
 }
@@ -82,7 +83,7 @@ body{
     margin-right: 1.5rem;
     transition:background-color 0.3s ease, box-shadow 0.3s ease;
     width: 6.5rem;
-    background-color:black ;
+    background-color:#0c2014 ;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
@@ -91,7 +92,7 @@ body{
 }
 
 p{
-    color: white;
+    color: #E8DFCA;
     font-size:small;
     font-weight: bold;
     padding: .4rem;

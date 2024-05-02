@@ -12,7 +12,17 @@
     include 'navigationheader.php';
 ?>
 
-<h1>Hello</h1>
+<div class="bgpic"></div>
+<div class="bgcolored">
+    <div class="content_cont">
+    <div class="heading">
+        <h1>T<span class="lwrcase">ara</span> <span class="h1clr">G-BIKE</span> </h1>
+    </div>
+    <div class="description">
+        <p>Your description here</p>
+    </div>
+    </div>
+</div>
 
 </body>
 </html>

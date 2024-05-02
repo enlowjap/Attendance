@@ -512,7 +512,7 @@ if (!empty($errors)) {
     <nav id="navbar" class="navbar">
         <a href="home2.php">Home</a>
         <a href="UserProfile.php">Profile</a>
-        <a href="Login.php">Logout</a>
+        <a href="logout.php">Logout</a>
        <!-- <a href="#Discussion Board">Services</a>-->
         
     </nav>

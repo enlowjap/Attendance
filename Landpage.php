@@ -12,6 +12,9 @@
     include 'navigationheader.php';
 ?>
 
+<div></div>
+
+
 <div class="bgpic"></div>
 <div class="bgcolored">
     <div class="content_cont">

@@ -115,8 +115,14 @@ if (!empty($errors)) {
     //     echo "<p><strong>{$post['FName']} {$post['LName']}</strong></p>";
     //     echo "<a href='{$post['link']}' target='_blank'>{$post['link']}</a>";
     //     echo "<p>{$post['created_at']}</p>";
+    //     echo "<form action='comment_handler.php' method='POST'>";
+    //     echo "<input type='hidden' name='post_id' value='{$post['post_id']}'>";
+    //     echo "<textarea name='comment_content' placeholder='Write your comment here'></textarea>";
+    //     echo "<button type='submit'>Comment</button>";
+    //     echo "</form>";
     //     echo "</div>";
     // }
+    
 }
 
 
@@ -530,6 +536,53 @@ if (!empty($errors)) {
         color: black;
         text-decoration: none;
     }
+    .action-panel {
+    position: relative; /* Make sure the parent container is positioned */
+}
+
+.comment-form {
+    position: absolute;
+    top: 100%; /* Position the comment form below the comment button */
+    left: 0;
+    width: 95%;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    display: none; /* Initially hide the comment form */
+    display: flex; /* Use flexbox to align items */
+    align-items: center; /* Center items vertically */
+    justify-content: space-between; /* Space items evenly */
+}
+
+.comment-form input[type='hidden'],
+.comment-form textarea {
+    flex: 1; /* Take up remaining space */
+    padding: 5px;
+    margin-bottom: 5px;
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+
+.comment-form textarea {
+    width: 335px;
+    resize: none; /* Allow vertical resizing */
+}
+
+.comment-form button {
+    padding: 5px 10px;
+    margin-left: 15px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 20%; /* Position the comment form below the comment button */
+   
+}
+
+.comment-form button:hover {
+    background-color: #0056b3;
+}
+
     
 </style>
 </head>
@@ -591,34 +644,61 @@ if (!empty($errors)) {
             </div>
 
             <ul class="post-list" id="postList">
-                <!-- Loop through posts and create post items -->
-                <?php foreach ($posts as $post): ?>
-                    <li class="post-item">
-                        <div class="post-info">
-                             <div class="avatar-circle">
-                                <!-- Profile picture will be added here -->
-                                <img src="<?php echo !empty($imageBase64) ? "data:image/jpeg;base64," . $imageBase64 : "default_profile.jpg"; ?>" alt="Profile Picture">
-                            </div>
-                            <p class="name-label"><?= $post['FName'] ?> <?= $post['LName'] ?></p>
-                            <p class="date-label"><?= date('M d, Y h:i:s A', strtotime($post['created_at'])) ?></p>
+    <!-- Loop through posts and create post items -->
+    <?php foreach ($posts as $post): ?>
+        <li class="post-item">
+            <div class="post-info">
+                <div class="avatar-circle">
+                    <!-- Profile picture will be added here -->
+                    <img src="<?php echo !empty($imageBase64) ? "data:image/jpeg;base64," . $imageBase64 : "default_profile.jpg"; ?>" alt="Profile Picture">
+                </div>
+                <p class="name-label"><?= $post['FName'] ?> <?= $post['LName'] ?></p>
+                <p class="date-label"><?= date('M d, Y h:i:s A', strtotime($post['created_at'])) ?></p>
+            </div>
+            <div class="post-content">
+                <p><?= $post['content'] ?></p>
+                <a href="<?= $post['link'] ?>" target="_blank" class="post-link"><?= $post['link'] ?></a>
+            </div>
+            <img src="data:image/jpeg;base64,<?= $post['image'] ?>" alt="Post Image">
+            
+            <!-- Action Panel -->
+            <div class="action-panel">
+                <!-- Like button with label -->
+                <div class="like-label">1 Like</div>
+                <button class="action-btn" id="likeBtn_<?= $post['post_id'] ?>" onclick="likePost(<?= $post['post_id'] ?>)">Like</button>
+                <!-- Comment button -->
+                <button class="action-btn" onclick="toggleCommentBox(this)">Comment</button>
+                <!-- Comment form -->
+                <div class="comment-form" style="display:none;">
+                    <form action='comment_handler.php' method='POST'>
+                        <input type='hidden' name='post_id' value='<?= $post['post_id'] ?>'>
+                        <div class="comment-inputs">
+                            <textarea name='comment_content' placeholder='Write your comment here'></textarea>
+                            <button type='submit' class="action-btn">Post Comment</button>
                         </div>
-                        <div class="post-content">
-                            <p><?= $post['content'] ?></p>
-                            <a href="<?= $post['link'] ?>" target="_blank" class="post-link"><?= $post['link'] ?></a>
-                        </div>
-                        <img src="data:image/jpeg;base64,<?= $post['image'] ?>" alt="Post Image">
-                        
-                        <!-- Action Panel -->
-                        <div class="action-panel">
-                             <!-- Like button with label -->
-                            <div class="like-label">1 Like</div>
-                            <button class="action-btn" id="likeBtn_<?= $post['post_id'] ?>" onclick="likePost(<?= $post['post_id'] ?>)">Like</button>
-                            <button class="action-btn">Comment</button>
-                            <button class="action-btn">Copy Link</button>
-                        </div>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
+                    </form>
+                </div>
+                <button class="action-btn">Report</button>
+            </div>
+        </li>
+    <?php endforeach; ?>
+</ul>
+
+
+<script>
+   function toggleCommentBox(button) {
+    var commentForm = button.nextElementSibling;
+    if (commentForm.style.display === "none") {
+        commentForm.style.display = "block";
+    } else {
+        commentForm.style.display = "none";
+    }
+}
+
+</script>
+
+
+
 
 
             <!-- The Modal -->

@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $row = $result->fetch_assoc();
                 setcookie('ID',$row['ID'], time() + 60*60*24*30, '/');
                 $_SESSION['user_id'] = $row['ID'];
-                header('location: like_and_post_test.php');
+                header('location: home2.php');
                 exit;
             } else {
                 $errors[] = 'Incorrect Email or Password';

@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+// Set the time zone to Asia/Manila
+date_default_timezone_set('Asia/Manila');
+
 include 'dbConnect.php';
 
 $errors = [];
@@ -22,7 +25,7 @@ if (isset($_SESSION['user_id'])) {
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    $result = $stmt->get_result();
+    $result = $stmt->get_result();      
 
     if ($result) {
         if ($result->num_rows > 0) {
@@ -104,7 +107,7 @@ if (!empty($errors)) {
         echo "<p>Error: $error</p>";
     }
 } else {
-    // Display posts
+    // // Display posts
     // foreach ($posts as $post) {
     //     echo "<div class='post-item'>";
     //     echo "<img src='data:image/jpeg;base64," . $post['image'] . "' alt='Post Image'>";
@@ -112,8 +115,14 @@ if (!empty($errors)) {
     //     echo "<p><strong>{$post['FName']} {$post['LName']}</strong></p>";
     //     echo "<a href='{$post['link']}' target='_blank'>{$post['link']}</a>";
     //     echo "<p>{$post['created_at']}</p>";
+    //     echo "<form action='comment_handler.php' method='POST'>";
+    //     echo "<input type='hidden' name='post_id' value='{$post['post_id']}'>";
+    //     echo "<textarea name='comment_content' placeholder='Write your comment here'></textarea>";
+    //     echo "<button type='submit'>Comment</button>";
+    //     echo "</form>";
     //     echo "</div>";
     // }
+    
 }
 
 
@@ -388,13 +397,17 @@ if (!empty($errors)) {
     }
     .post-info {
     margin-bottom: 10px;
-    text-align: center; /* Center the name and date/time */
+    text-align: left; /* Center the name and date/time */
     }
-
-    .name-label, .date-label {
+    .date-label {
+        color: #A5A8AC;
+        font-size: 12px;
+        margin-top: 2px;
+    }
+    .name-label {
         color: white;
         font-size: 14px;
-        margin-bottom: 5px;
+        margin-bottom: 0px;
     }
     .post-item img {
         max-width: 100%;
@@ -406,7 +419,6 @@ if (!empty($errors)) {
         
     }
 
-    
     .post-item .post-link {
         font-size: 14px;
         margin-top: 10px;
@@ -445,22 +457,30 @@ if (!empty($errors)) {
     }
     
     /* Add these styles to your existing CSS */
+   
     .avatar-circle {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background-color: #fff;
-    display: inline-block;
-    vertical-align: middle; /* Align the circle vertically */
-    margin-right: 5px;
-    overflow: hidden; /* Ensure the image stays within the circle */
-    object-fit: cover; /* Scale the image to cover the entire circle */
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background-color: #fff;
+        display: inline-block;
+        vertical-align: middle; /* Align the circle vertically */
+        margin-right: 0px;
+        overflow: hidden; /* Ensure the image stays within the circle */
+        object-fit: cover; /* Scale the image to cover the entire circle */
     }
     .name-label {
         display: inline-block;
         color: #fff;
         font-size: 14px;
         vertical-align: middle; /* Align the label vertically */
+        padding-right: 30px;
+       margin-top: 0px;
+    }
+    .avatar-circle img{
+        width: 100%;
+        height: 100%;
+
     }
 
     /* Modal Styling */
@@ -487,6 +507,18 @@ if (!empty($errors)) {
         height: auto;
     }
 
+    .like-label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: white;
+    font-size: 14px;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+
     /* Close Button */
     .close {
         color: #aaa;
@@ -504,6 +536,110 @@ if (!empty($errors)) {
         color: black;
         text-decoration: none;
     }
+    .action-panel {
+    position: relative; /* Make sure the parent container is positioned */
+}
+
+.comment-form {
+    position: absolute;
+    top: 100%; /* Position the comment form below the comment button */
+    left: 0;
+    width: 95%;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    display: none; /* Initially hide the comment form */
+    display: flex; /* Use flexbox to align items */
+    align-items: center; /* Center items vertically */
+    justify-content: space-between; /* Space items evenly */
+}
+
+.comment-form input[type='hidden'],
+.comment-form textarea {
+    flex: 1; /* Take up remaining space */
+    padding: 5px;
+    margin-bottom: 5px;
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+
+.comment-form textarea {
+    width: 335px;
+    resize: none; /* Allow vertical resizing */
+}
+
+.comment-form button {
+    padding: 5px 10px;
+    margin-left: 15px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 20%; /* Position the comment form below the comment button */
+   
+}
+
+.comment-form button:hover {
+    background-color: #0056b3;
+}
+.report-panel {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  width: 300px;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000; /* Ensure the panel is above other content */
+}
+
+.report-panel form {
+  display: flex;
+  flex-direction: column;
+}
+
+.report-panel textarea {
+  resize: none;
+  height: 100px;
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.report-panel button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.report-panel button:hover {
+  background-color: #0056b3;
+}
+
+.close-btn {
+  position: absolute;
+  top: 30px;
+  right: 10px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+.report-panel h2{
+    color:#2c2c2c;
+}
+
+
     
 </style>
 </head>
@@ -536,7 +672,7 @@ if (!empty($errors)) {
                 </ul>
             </div>
 
-             <!-- Trending Location Panel -->
+             <!-- Trending Location Panel 
              <div class="my-routes-panel">
                 <h3>My Routes</h3>
                 <hr>
@@ -544,23 +680,24 @@ if (!empty($errors)) {
                     <li><a href="#">- Route 1</a></li>
                     <li><a href="#">- Route 2</a></li>
                     <li><a href="#">- Route 3</a></li>
-                    <!-- Add more locations as needed -->
+                    Add more locations as needed
                 </ul>
-            </div>
+            </div>-->
 
             <div class="post-panel">
-            <form method="POST" action="" id="postForm" enctype="multipart/form-data">
-    <textarea id="postContent" name="postContent" placeholder="Write your post here..." required></textarea>
-    <!-- File input with custom styling -->
-    <div class="file-input">
-        <label for="postImage" >Choose Image</label>
-        <input type="file" id="postImage" name="postImage" accept="image/*" required>
-    </div>
-    <br>
-    <input type="text" id="postLink" name="postLink" placeholder="Paste link here (optional)">
-    <button type="submit" form="postForm">Post</button>
+                <form method="POST" action="" id="postForm" enctype="multipart/form-data">
+                <textarea id="postContent" name="postContent" placeholder="Write your post here..."></textarea>
+                <!-- File input with custom styling -->
+                <div class="file-input">
+                    <label for="postImage">Choose Image</label>
+                    <input type="file" id="postImage" name="postImage" accept="image/*">
+                </div>
+                <br>
+                <input type="text" id="postLink" name="postLink" placeholder="Paste link here (optional)">
+                <button type="submit" form="postForm">Post</button>
 
-</form>
+            </form>
+
             </div>
 
             <ul class="post-list" id="postList">
@@ -568,17 +705,123 @@ if (!empty($errors)) {
     <?php foreach ($posts as $post): ?>
         <li class="post-item">
             <div class="post-info">
+                <div class="avatar-circle">
+                    <!-- Profile picture will be added here -->
+                    <img src="<?php echo !empty($imageBase64) ? "data:image/jpeg;base64," . $imageBase64 : "default_profile.jpg"; ?>" alt="Profile Picture">
+                </div>
                 <p class="name-label"><?= $post['FName'] ?> <?= $post['LName'] ?></p>
-                <p class="date-label"><?= $post['created_at'] ?></p>
-            </div>
-            <img src="data:image/jpeg;base64,<?= $post['image'] ?>" alt="Post Image">
+                <p class="date-label"><?= date('M d, Y h:i:s A', strtotime($post['created_at'])) ?></p>
+            </div> 
             <div class="post-content">
                 <p><?= $post['content'] ?></p>
                 <a href="<?= $post['link'] ?>" target="_blank" class="post-link"><?= $post['link'] ?></a>
             </div>
+            <img src="data:image/jpeg;base64,<?= $post['image'] ?>" alt="Post Image">
+            
+            <!-- Action Panel -->
+            <div class="action-panel">
+                <!-- Like button with label -->
+                <div class="like-label">1 Like</div>
+                <button class="action-btn" id="likeBtn_<?= $post['post_id'] ?>" onclick="likePost(<?= $post['post_id'] ?>)">Like</button>
+                <!-- Comment button -->
+                <button class="action-btn" onclick="toggleCommentBox(this)">Comment</button>
+                <!-- Comment form -->
+                <div class="comment-form" style="display:none;">
+                    <form action='comment_handler.php' method='POST'>
+                        <input type='hidden' name='post_id' value='<?= $post['post_id'] ?>'>
+                        <div class="comment-inputs">
+                            <textarea name='comment_content' placeholder='Write your comment here'></textarea>
+                            <button type='submit' class="action-btn">Post Comment</button>
+                        </div>
+                    </form>
+                </div>
+                <button class="action-btn" id="reportBtn">Report</button>
+
+                <!-- Panel for report form -->
+                <div id="reportPanel" style="display: none;" class="report-panel">
+                <h2>Report</h2>  
+                <button id="closeBtn" class="close-btn">×</button>
+                <form id="reportForm">
+                    <textarea id="reportDescription" placeholder="Enter report description"></textarea>
+                    <!-- <input type="hidden" id="postID" name="postID" value=""> -->
+                    <button type="submit">Submit Report</button>
+                </form>
+                </div>
+
         </li>
+        
     <?php endforeach; ?>
 </ul>
+
+<script>
+ document.addEventListener('DOMContentLoaded', function() {
+  const reportBtn = document.getElementById('reportBtn');
+  const reportPanel = document.getElementById('reportPanel');
+  const closeBtn = document.getElementById('closeBtn');
+  const reportForm = document.getElementById('reportForm');
+  const reportDescription = document.getElementById('reportDescription');
+  const postIDInput = document.getElementById('postID');
+
+  reportBtn.addEventListener('click', function() {
+    reportPanel.style.display = 'block';
+    const postItem = this.closest('.post-item'); // Assuming a structure where each post has a '.post-item' container
+    if (postItem) {
+      const postID = postItem.dataset.postId; // Assuming the post ID is stored in a data attribute
+      postIDInput.value = postID; // Set the postIDInput value to the retrieved post ID
+    }
+  });
+
+  closeBtn.addEventListener('click', function() {
+    reportPanel.style.display = 'none';
+  });
+
+  reportForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    if (validateForm()) {
+      const formData = new FormData(reportForm);
+
+      fetch('process_report.php', {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        reportForm.reset();
+        reportPanel.style.display = 'none';
+        alert('Report submitted successfully!');
+      })
+      .catch(error => console.error('Error:', error));
+    }
+  });
+
+  function validateForm() {
+    if (reportDescription.value.trim() === '') {
+      alert('Please enter a report description.');
+      return false;
+    }
+    return true;
+  }
+});
+
+
+
+</script>
+
+<script>
+   function toggleCommentBox(button) {
+    var commentForm = button.nextElementSibling;
+    if (commentForm.style.display === "none") {
+        commentForm.style.display = "block";
+    } else {
+        commentForm.style.display = "none";
+    }
+}
+
+</script>
+
+
+
 
 
             <!-- The Modal -->
@@ -748,6 +991,31 @@ if (!empty($errors)) {
                 }
             }
         }
+    </script>
+
+    <script>
+        function likePost(postId) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'likePost.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            if (response.success) {
+                // Update the button text and disable it
+                var likeButton = document.getElementById('likeBtn_' + postId);
+                if (likeButton) {
+                    likeButton.textContent = 'Liked';
+                    likeButton.disabled = true;
+                }
+            } else {
+                alert(response.message); // Display error message if the post is already liked
+            }
+        }
+    };
+    xhr.send('action=like&postId=' + postId);
+}
+
     </script>
 <script>
         window.onscroll = function() { stickyNavbar() };

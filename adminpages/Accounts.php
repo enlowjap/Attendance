@@ -1,13 +1,14 @@
 <?php 
-session_start();
 include '../dbConnect.php';
 
 if(isset($_COOKIE['ID'])){
     $user_ID = $_COOKIE['ID'];
  }else{
     $user_ID = '';
-    header('location:AdminLogin.php');}
 
+header('location:AdminLogin.php');}
+
+session_start();
 
 function deleteUser($userID) {
     global $conn; // Access the database connection inside the function
@@ -67,113 +68,122 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['adminID'])) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Accounts</title>
 <link rel="icon" href="/picture/bicycle.png" type="image/png">
-<link rel="stylesheet" href="/css/adminAccounts.css">
+<link rel="stylesheet" href="/css/adminAccounts.css">  
 </head>
 
 <body> 
 
-<?php 
-if(isset($_SESSION['message'])){
-    
-    $message = $_SESSION['message'];
 
-    
-    if(is_array($message)){
-        
-        foreach($message as $msg){
-           echo '
-           <div class="message">
-              <span>'.$msg.'</span>
-              <i class="fas fa-times" onclick="removeMessage(this.parentElement);"></i>
-           </div>
-           ';
-        }
-    } else {
-        
-        echo '
-        <div class="message">
-           <span>'.$message.'</span>
-           <i class="fas fa-times" onclick="removeMessage(this.parentElement);"></i>
-        </div>
-        ';
-    }
-
-    
-    unset($_SESSION['message']);
-}
-?>
-
-<script>
-    function removeMessage(element) 
-        {
-        element.classList.add("hide");
-    }
-</script>
 
 <div class="container">
     <div class="sidebar">
         <h2>ADMIN</h2>
-        <a href="/Postmanagement.php"><button class="postbtn">Reports Management</button></a>
+        <a href="/adminpages/Postmanagement.php"><button class="postbtn">Reports Management</button></a>
 
-        <a href="/Accounts.php"><button class="Accbtn" style="margin-top: 16px;">Accounts</button></a>
+        <a href="/adminpages/Accounts.php"><button class="Accbtn" style="margin-top: 16px;">Accounts</button></a>
 
-        <a href="/logoutadmin.php"><button class="button logout-button">Logout</button></a>
+        <a href="/adminpages/logoutadmin.php"><button class="button logout-button">Logout</button></a>
     </div>
-    <div class="content">
-        <h2 class="panel-title">Accounts</h2>
-        <div class="panel">
-            <div class="tabs">
-                <button class="tab active" onclick="showTab('user')">User Account</button>
-                <button class="tab" onclick="showTab('admin')">Admin Account</button>
-            </div>
+<div class="content">
+        <?php 
+        if(isset($_SESSION['message'])){
             
+            $message = $_SESSION['message'];
+
             
+            if(is_array($message)){
+                
+                foreach($message as $msg){
+                echo '
+                <div class="message">
+                    <span>'.$msg.'</span>
+                    <i class="fas fa-times" onclick="removeMessage(this.parentElement);"></i>
+                </div>
+                ';
+                }
+            } else {
+                
+                echo '
+                <div class="message">
+                <span>'.$message.'</span>
+                <i class="fas fa-times" onclick="removeMessage(this.parentElement);"></i>
+                </div>
+                ';
+            }
 
-<div class="tab-content active" id="user-tab-content">         
-<div class="containerr">
+            
+            unset($_SESSION['message']);
+        }
+        ?>
 
-<button class="add-btn" id="addUserBtn" >Add User</button>
-<!-- Form Popup -->
-<div class="formm-popup" id="myForm">
-  <form action="submituser.php" method="post" class="formm-container">
-    <h2>Add User</h2>
+        <script>
+            function removeMessage(element) 
+                {
+                element.classList.add("hide");
+            }
+        </script>
+            <h2 class="panel-title">Accounts</h2>
+    <div class="panel">
+                <div class="tabs">
+                    <button class="tab active" data-tab="user" onclick="showTab('user')">User Account</button>
+                    <button class="tab" data-tab="admin" onclick="showTab('admin')">Admin Account</button>
+                    <script>
+                        function showTab(tabName) {
+                            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+                            document.querySelectorAll('.tab-content').forEach(tabContent => tabContent.classList.remove('active'));
 
-    <label for="fname"><b>First Name</b></label>
-    <input type="text" placeholder="Enter First Name" name="fname" required>
+                            document.querySelector('.tab[data-tab="' + tabName + '"]').classList.add('active');
+                            document.querySelector('#' + tabName + '-tab-content').classList.add('active');
+                        }
+                    </script>
+                </div>
 
-    <label for="lname"><b>Last Name</b></label>
-    <input type="text" placeholder="Enter Last Name" name="lname" required>
+<div class="tab-content active" id="user-tab-content">  
+    <div class="containerr">
 
-    <label for="gender"><b>Gender</b></label>
-    <select name="gender" required>
-      <option value="Female">Female</option>
-      <option value="Male">Male</option>
-      <option value="Others">Others</option>
-    </select>
+        <button class="add-btn" id="addUserBtn" >Add User</button>
+        <!-- Form Popup -->
+        <div class="formm-popup" id="myForm">
+            <form action="submituser.php" method="post" class="formm-container">
+                <h2>Add User</h2>
 
-    <label for="birthdate"><b>Birth Date</b></label>
-    <input type="date" name="birthdate" required>
+                <label for="fname"><b>First Name</b></label>
+                <input type="text" placeholder="Enter First Name" name="fname" required>
 
-    <label for="email"><b>Email</b></label>
-    <input type="email" placeholder="Enter Email" name="email" required>
+                <label for="lname"><b>Last Name</b></label>
+                <input type="text" placeholder="Enter Last Name" name="lname" required>
 
-    <label for="password"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="password" required>
+                <label for="gender"><b>Gender</b></label>
+                    <select name="gender" required>
+                        <option value="~~">~~</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Others">Others</option>
+                    </select>
 
-    <button type="submit" class="btn">Add</button>
-    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-  </form>
-</div>
+                <label for="birthdate"><b>Birth Date</b></label>
+                <input type="date" name="birthdate" required>
 
-<script> 
-document.getElementById("addUserBtn").addEventListener("click", function() {
-  document.getElementById("myForm").style.display = "block";
-});
+                <label for="email"><b>Email</b></label>
+                <input type="email" placeholder="Enter Email" name="email" required>
 
-function closeForm() {
-  document.getElementById("myForm").style.display = "none";
-}
-</script>
+                <label for="password"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="password" required>
+
+                <button type="submit" class="btn">Add</button>
+                <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+            </form>
+                <script> 
+                    document.getElementById("addUserBtn").addEventListener("click", function() {
+                    document.getElementById("myForm").style.display = "block";
+                    });
+
+                    function closeForm() {
+                    document.getElementById("myForm").style.display = "none";
+                    }
+                </script>
+        </div>
+                
 
         <table>
             <tr>
@@ -218,20 +228,21 @@ function closeForm() {
             // Close the connection
             mysqli_close($conn);
             ?>
-        </table>
-    </div>
-            </div>
-
-            <div class="tab-content" id="admin-tab-content">
-            <div class="containerr">
-            <button class="add-btn" id="addAdminBtn" onclick="addAdmin()">Add Admin</button>
             <script>
                 function confirmDelete(userID) {
                     if (confirm("Are you sure you want to delete this user?")) {
                         document.getElementById("deleteForm" + userID).submit();
                     }
                 }
+            </script>
+        </table>
+    </div>
+</div>
 
+<div class="tab-content" id="admin-tab-content">
+    <div class="containerr">
+        <button class="add-btn" id="addAdminBtn" onclick="addAdmin()">Add Admin</button>
+            <script>
                 function addAdmin() {
                     // Show a prompt to enter admin details
                     var name = prompt("Enter Admin Name:");
@@ -265,7 +276,7 @@ function closeForm() {
             </tr>
             <?php
             // Database connection
-            include 'dbConnect.php';
+            include '../dbConnect.php';
 
             // Fetching data from the database
             $sql = "SELECT * FROM Administrator";
@@ -292,26 +303,10 @@ function closeForm() {
             mysqli_close($conn);
             ?>
         </table>
-    </div>
-
-
-
-            </div>
         </div>
     </div>
 </div>
-
-<script>
-     function showTab(tabName) {
-        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-        document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-        document.querySelector('#' + tabName + '-tab-content').classList.add('active');
-        document.querySelector('.tab[data-tab="' + tabName + '"]').classList.add('active');
-    }
-</script>
-
-
-
+</div>
 
 </body>
 </html>

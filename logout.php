@@ -1,9 +1,16 @@
 <?php
 
-   include 'connect.php';
+include '../dbConnect.php';
 
-   setcookie('user_id', '', time() - 1, '/');
+// Unset all session variables
+$_SESSION = array();
 
-   header('location:../Login.php');
+// Destroy the session
+session_destroy();
 
+// Delete the cookie by setting its expiration time to the past
+setcookie('ID', '', time() - 1, '/');
+
+header('location: Login.php');
+exit(); // Ensure script stops executing after redirection
 ?>

@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate input (you can add more validation as needed)
     if (!empty($name) && !empty($password)) {
         // Database connection
-        include 'dbConnect.php'; // Assuming dbConnect.php contains your database connection code
+        include '../dbConnect.php'; // Assuming dbConnect.php contains your database connection code
 
         // Prepare and execute SQL query to insert admin data
         $insert_query = $conn->prepare("INSERT INTO Administrator (Name, Password) VALUES (?, ?)");

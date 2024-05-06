@@ -34,9 +34,10 @@ if(isset($message)){
     </div>
 
     <div class="navbutton">
-    <div><p>ABOUT</p></div>
     
-    <div><p>CONTACT</p></div>
+    <div><a href="/About.php"><p>ABOUT</p></div>
+    
+    <div><a href="/Contact.php"><p>CONTACT</p></div>
     
     <div class="navbuttonend"><a href="/Login.php"><p>SIGN IN</p></a></div>
     </div>

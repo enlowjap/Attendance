@@ -1,12 +1,5 @@
 <?php 
-$db_name = 'siklistadb';
-$user_name = 'root';
-$user_password = '';
-
-$conn = new mysqli('localhost', $user_name, $user_password, $db_name);
-if ($conn->connect_error) {
-    die('Connection failed: ' . $conn->connect_error);
-}
+include '../dbConnect.php';
 
 try {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -21,8 +14,15 @@ try {
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
+            if($row['ID'] == 1){
                 setcookie('ID',$row['ID'], time() + 60*60*24*30, '/');
-                header('location:Postmanagement.php');
+                header('location:SAdashboard.php');
+                exit();
+            }else{
+                setcookie('ID',$row['ID'], time() + 60*60*24*30, '/');
+                header('location:Adashb.php');
+                exit();
+            }
             }else{
                 $message[] = 'Incorrect ID number or Password';
             }
@@ -38,7 +38,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log In</title>
+    <title>Log In-Admin</title>
     <link rel="icon" href="/picture/bicycle.png" type="image/png">
     <link rel="stylesheet" href="/css/AdminLogin.css">
 </head>

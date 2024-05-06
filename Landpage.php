@@ -12,7 +12,24 @@
     include 'navigationheader.php';
 ?>
 
-<h1>Hello</h1>
+<div></div>
+
+
+<div class="bgpic"></div>
+<div class="bgcolored">
+    <div class="content_cont">
+    <div class="heading">
+        <h1>T<span class="lwrcase">ara</span> <span class="h1clr">G-BIKE</span> </h1>
+    </div>
+    <div class="description">
+<<<<<<< Updated upstream
+        <p>route guidance guidance with a cyclist community platform </p>
+=======
+        <p>A Route  guidance with a cyclist community platform</p>
+>>>>>>> Stashed changes
+    </div>
+    </div>
+</div>
 
 </body>
 </html>

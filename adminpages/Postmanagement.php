@@ -36,15 +36,11 @@ if(isset($message)){
 </head>
 <body>
 
+<?php 
+include '../adminpages/Sadminnavbar.php';
+?>
+
 <div class="container">
-    <div class="sidebar">
-        <h2>ADMIN</h2>
-        <a href="/adminpages/Postmanagement.php"><button class="postbtn">Report Management</button></a>
-
-        <a href="/adminpages/Accounts.php"><button class="Accbtn" style="margin-top: 16px;">Accounts</button></a>
-
-        <a href="/adminpages/logoutadmin.php"><button class="button logout-button">Logout</button></a>
-    </div>
     <div class="content">
         <h2 class="panel-title">Reports</h2>
         <div class="panel">

@@ -1,0 +1,378 @@
+
+.message{
+    position: fixed;
+    top:0;
+    margin:0 auto;
+    background-color: white;
+    padding:2rem;
+    display: flex;
+    align-items: center;
+    gap:1rem;
+    justify-content: space-between;
+    animation: hideMessage 3.5s forwards;
+ }
+ .message.hide {
+    display: none;
+}
+ .message.form{
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: var(--white);
+    top: 2rem;
+    border-radius: .5rem;
+ }
+ @keyframes hideMessage {
+    0% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; display: none; }
+}
+ .message span{
+    font-size: 2rem;
+    color:var(--black);
+ }
+ .message i{
+    font-size: 2.5rem;
+    color:var(--red);
+    cursor: pointer;
+    transition: .2s linear;
+ }
+ .message i:hover{
+    transform: rotate(90deg);
+ }
+
+body{
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    font-family: Arial;
+    background-image: radial-gradient(circle at top left, #E8DFCA, #E8DFCA, #658068, #4F6F52, #1A4D2E);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.maincont{
+    padding: 0;
+    margin: 0;
+    margin-top: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.cpostcont{
+    width: 30rem;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    background-color:rgb(26, 77, 46,.5);
+    border-radius: 1.5rem;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.cpostcont h1{
+    color: #E8DFCA;
+    padding: .5rem;
+    margin: 0;
+}
+.cpostcont div{
+    flex-grow: 1;
+    padding: 0;
+    margin: 0;
+}
+.cpostcont div form{
+    padding: 1rem;
+    margin: .5rem;
+    width: 28rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.c{
+    padding: 0;
+    margin: 0;
+}
+.cpostcont div form p{
+    padding: 0;
+    font-size: large;
+    font-weight: bold;
+    color: #E8DFCA;
+}
+.cpostcont div form textarea{
+    width: 27rem;
+    font-size: medium;
+    font-weight: bold;
+    color: black;
+    background-color: #E8DFCA;
+    border: none;
+    border-radius: 1rem;
+    padding: .5rem;
+}
+.imgpreview{
+    background-color:  #E8DFCA;
+    border-radius: .5rem;
+    width: 27rem;
+    box-shadow: inset 0px 8px 16px 0px rgba(0,0,0,0.2);
+    margin-bottom: .5rem;
+}
+/* Styling the file input */
+#fileInput {
+    margin-bottom: .5rem;
+    background-color:  #E8DFCA; /* Background color */
+    color: #4F6F52; /* Text color */
+    padding: 10px; /* Padding */
+    border-radius: 5px; /* Border radius */
+    font-family: Arial, sans-serif; /* Font family */
+    cursor: pointer; /* Cursor style */
+    outline: none; /* Remove outline */
+}
+#fileInput::file-selector-button {
+    background-color:  #E8DFCA; /* Background color */
+    color: #4F6F52; /* Text color */
+    padding: 10px; /* Padding */
+    font-family: Arial, sans-serif; /* Font family */
+    cursor: pointer; /* Cursor style */
+    z-index: 2; /* Ensure the button is above the input text */
+    border:none;
+    border-right: #1A4D2E 1px solid;
+
+}
+/* Focus effect */
+#fileInput:focus {
+    border-color: rgb(245, 239, 230); /* Change border color on focus */
+}
+.mapbttn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.mapbttn div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+:root {
+    --primary-color: #1A4D2E;
+    --secondary-color: #4F6F52;
+    --background-color: #E8DFCA;
+    --text-color: #F5EFE6;
+}
+#routeBtn,
+    #getUrlBtn {
+        border-radius: 1rem;
+        background-color: var(--primary-color);
+        color: var(--background-color);
+        border: none;
+        padding: 10px 20px;
+        margin-right: 10px;
+        margin-bottom: .5rem;
+        cursor: pointer;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    }
+
+    #routeBtn:hover,
+    #getUrlBtn:hover {
+        background-color: #4F6F52; /* darker shade of secondary color for hover effect */
+        box-shadow: inset 0px 8px 16px 0px rgba(0,0,0,0.2)
+    }
+
+    #urlTextbox {
+        border-radius: 5px;
+        background-color: var(--background-color);
+        color: var(--primary-color);
+        border: none;
+        padding: 10px;
+        margin-right: 10px;
+        margin-bottom: .5rem;
+        box-shadow: inset 0px 8px 16px 0px rgba(0,0,0,0.2)
+    }
+
+    input[type="submit"] {
+        border-radius: 1rem;
+        background-color: var(--primary-color);
+        color: var(--text-color);
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #1A4D2E; /* darker shade of secondary color for hover effect */
+    }
+
+    .post{
+        
+        width: 40rem;
+        border-radius: 1.5rem;
+        padding: 0;
+        margin: 0;
+        margin-top: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .postcontent{
+        width: auto;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .contentp{
+        padding: 0;
+        margin: 0;
+        margin-bottom: 1rem;
+        width: 39rem;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        background-color:rgb(26, 77, 46,.5);
+        border-radius: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .userprofile{
+        width: 20rem;
+        padding: .5rem;
+        align-self: flex-start;
+        display: flex;
+        flex-direction:row;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+    .pcontent{
+        width: 38rem;
+        padding: .5rem;
+        align-self: center;
+        display: flex;
+        flex-direction:column;
+        align-items: center;
+    }
+    .pcontent P{
+        color: #E8DFCA;
+        font-size: medium;
+        font-weight: bold;
+    }
+    .link_container {
+        /* Set maximum width to contain the link */
+        max-width: 38rem; /* Adjust as needed */
+        /* Ensure text wraps within the container */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-top: 1rem;
+    }
+    .link_container a {
+        color: #E8DFCA;
+        text-decoration: underline;
+    }
+    .likes{
+        border-top: 2px solid #E8DFCA;
+        width: 37rem;
+        padding: .5rem;
+        align-self: flex-start;
+        display: flex;
+        flex-direction:row;
+        align-items: center;
+        justify-content: space-around;
+        margin-top: .5rem;
+    }
+    div[id^="likeButton-"] {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+    .countL{
+        color: #E8DFCA;
+        font-size: medium;
+        font-weight: bold;
+    }
+    div[id^="likeButton-"] button{
+        background-color: #1A4D2E;
+        border: none;
+        padding: 8px 16px;
+        margin-left: 10px;
+        cursor: pointer;
+        color: #F5EFE6;
+        font-size: medium;
+        font-weight: bold;
+        border-radius:1rem;
+    }
+    .repbttn button {
+        background-color: #1A4D2E;
+        color: #F5EFE6;
+        border: none;
+        border-radius:1rem;
+        padding: 8px 16px;
+        margin-right: 10px;
+        cursor: pointer;
+        font-size: medium;
+        font-weight: bold;
+    }
+    div[id^="likeButton-"] button:hover,
+    .repbttn button:hover {
+        background-color: #803D3B;
+    }
+    .formm-popup {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        right: 15px;
+        border: 3px solid #f1f1f1;
+        z-index: 9;
+        }
+        
+        /* Add styles to the form container */
+        .formm-container {
+        max-width: 300px;
+        padding: 20px;
+        background-color: white;
+        }
+        
+        /* Full-width input fields */
+        .formm-container input[type=text], .formm-container input[type=password], .formm-container input[type=email], .formm-container select, .formm-container input[type=date] {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0 10px 0;
+        border: none;
+        background: #f1f1f1;
+        }
+        
+        /* When the inputs get focus, do something */
+        .formm-container input[type=text]:focus, .formm-container input[type=password]:focus, .formm-container input[type=email]:focus, .formm-container select:focus, .formm-container input[type=date]:focus {
+        background-color: #ddd;
+        outline: none;
+        }
+        
+        /* Set a style for the submit button */
+        .formm-container .btn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 16px 20px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom: 10px;
+        opacity: 0.8;
+        }
+        
+        /* Add a red background color to the cancel button */
+        .formm-container .cancel {
+        background-color: red;
+        }
+        
+        /* Add some hover effects to buttons */
+        .formm-container .btn:hover, .open-button:hover {
+        opacity: 1;
+        }

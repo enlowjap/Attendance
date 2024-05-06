@@ -5,6 +5,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["photo"])) {
     $user_ID = isset($_COOKIE['ID']) ? $_COOKIE['ID'] : '';
     $description = $_POST["description"];
     $status = "active";
+    $maplink = $_POST["link"];
 
     // File details
     $photo_tmp_name = $_FILES["photo"]["tmp_name"];
@@ -13,11 +14,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["photo"])) {
     $photo_data = file_get_contents($photo_tmp_name);
 
     // Prepare the SQL statement
-    $stmt = $conn->prepare("INSERT INTO Posts (ID, Content, Image, Status, Created_at) VALUES (?, ?, ?, ?, NOW())");
+    $stmt = $conn->prepare("INSERT INTO Posts (ID, Content, Image,Link, Status, Created_at) VALUES (?, ?,?, ?, ?, NOW())");
 
     // Bind parameters
     $null = NULL;
-    $stmt->bind_param('isbs', $user_ID, $description, $null, $status);
+    $stmt->bind_param('isbss', $user_ID, $description, $null,$maplink, $status);
     $stmt->send_long_data(2, $photo_data);
     
     // Execute the statement

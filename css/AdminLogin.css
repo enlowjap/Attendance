@@ -1,4 +1,4 @@
-html{padding: 0;
+    html{padding: 0;
     margin: 0;
     height: 100%;
 }
@@ -8,7 +8,7 @@ html{padding: 0;
         padding: 0;
         height: 100%;
         font-family: Arial;
-        background-image: linear-gradient(45deg,   #95BAD5,#00001a);
+        background-image: linear-gradient(45deg,   #F5EFE6,#E8DFCA,#4F6F52,#1A4D2E);
         background-size: cover;
         background-repeat: no-repeat;
     }
@@ -33,7 +33,7 @@ html{padding: 0;
     .signincont {
         height: 30rem;
         margin: 0;
-        background-color: #3A3B3C;
+        background-color: rgba(26, 77, 46,.5);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         border-radius: 1rem;
         display: flex;
@@ -62,21 +62,20 @@ html{padding: 0;
     .formcont div p{
         color: #FFFFFF;
         font-size: medium;
+        font-weight: bold;
     }
     
     .formcont div input{
         padding: .5rem;
         height:2rem ;
         width: 25rem ;
-        background-color:#3A3B3C;
+        background-color:#F5EFE6;
         border-style: none;
-        border: #606264 solid 2px;
         border-radius: 10rem;
-        color: lightgray;
+        color: #1A4D2E;
         font-size: medium;
+        font-weight: bold;
     }
-    
-
     .emailcont{
         margin-top: 1.5rem;
     }
@@ -115,7 +114,7 @@ html{padding: 0;
     .sgnUP{
         width: 20rem;
         height: 3rem;
-        background-color: black;
+        background-color: #1A4D2E;
         border: none;
         border-radius: 10rem;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -127,12 +126,12 @@ html{padding: 0;
     }
     
     .sgnUP:hover{
-        background-image: linear-gradient(to right, #00001a, #000000);
+        background-image: linear-gradient(to right, #1A4D2E, #1A4D2E,#E8DFCA);
         cursor: pointer;
     }
     
     .sgnUP:active{
-        background-image: linear-gradient(to right, #3A3B3C, #000000);
+        background-image: linear-gradient(to right, #4F6F52, #4F6F52,#1A4D2E);
         box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.2);
     }
     

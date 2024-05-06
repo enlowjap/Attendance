@@ -120,7 +120,7 @@ if (!empty($errors)) {
             
         </div>
         <div class="imgcont">
-            <img src="/picture/Blue Minimalist Quotes  Desktop Wallpaper.png" alt="bg"/>
+            <img src="/picture/bikes.jpg" alt="bg"/>
         </div>
     </div>
 </div>

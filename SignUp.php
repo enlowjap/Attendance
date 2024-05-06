@@ -10,7 +10,6 @@ try {
             $pass = filter_var($_POST['Pass'], FILTER_SANITIZE_STRING);
             $gender = $_POST['gender'];
             $birthday =$_POST['selected_date'];
-            $formatted_birthday = date('Y-m-d', strtotime($birthday));
     
             $find_email = $conn->prepare("SELECT * FROM users WHERE email = ?");
             $find_email->bind_param("s", $email);
@@ -92,12 +91,14 @@ try {
                 </div>
                 <div>
                     <p>Gender <span style="color:red">*</span></p>
-                    <div> <select id="dropdown" name="gender" >
-                    <option selected>~~</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Others">Others</option>
-                </select></div>
+                    <div class="dropdown-container">
+                            <select id="dropdown" name="gender">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Others">Others</option>
+                            </select>
+                            <div class="dropdown-arrow">▼</div>
+                            </div>
                 </div>
                 <div>
                     <p>Birth Date <span style="color:red">*</span></p>
@@ -147,25 +148,28 @@ try {
                 </div>
                 <div>
                     <p>Password</p>
-                    <input type="password" name="Pass" required>
-                    <span class="toggle-password" onclick="togglePasswordVisibility()">&#x1f441;</span>
-                </div>
-
-                <script>
-                    
-                    function togglePasswordVisibility() {
-                        var passwordInput = document.getElementById('PassTxtbx');
-                        var toggleIcon = document.querySelector('.toggle-password');
-            
-                        if (passwordInput.type === 'password') {
-                            passwordInput.type = 'text';
-                            toggleIcon.textContent = '👁️';
+                    <div class="passcont">
+                    <input type="password" id="passwordField" name="Pass" required>
+                    <button class="bttns" type="button" id="togglePasswordBtn" onclick="togglePasswordVisibility()">
+                        <span id="icon">&#x1f441;</span>
+                    </button>
+                    <script>
+                        function togglePasswordVisibility() {
+                        var passwordField = document.getElementById("passwordField");
+                        var icon = document.getElementById("icon");
+                        if (passwordField.type === "password") {
+                            passwordField.type = "text";
+                            icon.textContent = "🔒";
                         } else {
-                            passwordInput.type = 'password';
-                            toggleIcon.textContent = '🔒';
+                            passwordField.type = "password";
+                            icon.textContent = "👁️";
                         }
                     }
-                </script>
+                    </script>
+                    </div>
+                </div>
+
+                
 
 
 
@@ -183,13 +187,13 @@ try {
             </div>
         
     </div>
-
+    </form>
     <div class="imgcont">
-        <img src="/picture/Blue Minimalist Quotes  Desktop Wallpaper.png" alt="bg"/>
+        <img src="/picture/bikers in a field.jpg" alt="bg"/>
     </div>
 </div>
 </div>
-</form>
+
 
 </body>
 </html>

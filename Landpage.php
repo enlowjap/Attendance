@@ -22,7 +22,7 @@
         <h1>T<span class="lwrcase">ara</span> <span class="h1clr">G-BIKE</span> </h1>
     </div>
     <div class="description">
-        <p>Your description here</p>
+        <p>route guidance guidance with a cyclist community platform </p>
     </div>
     </div>
 </div>

@@ -582,6 +582,63 @@ if (!empty($errors)) {
 .comment-form button:hover {
     background-color: #0056b3;
 }
+.report-panel {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  width: 300px;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000; /* Ensure the panel is above other content */
+}
+
+.report-panel form {
+  display: flex;
+  flex-direction: column;
+}
+
+.report-panel textarea {
+  resize: none;
+  height: 100px;
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.report-panel button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.report-panel button:hover {
+  background-color: #0056b3;
+}
+
+.close-btn {
+  position: absolute;
+  top: 30px;
+  right: 10px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+.report-panel h2{
+    color:#2c2c2c;
+}
+
 
     
 </style>
@@ -615,7 +672,7 @@ if (!empty($errors)) {
                 </ul>
             </div>
 
-             <!-- Trending Location Panel -->
+             <!-- Trending Location Panel 
              <div class="my-routes-panel">
                 <h3>My Routes</h3>
                 <hr>
@@ -623,9 +680,9 @@ if (!empty($errors)) {
                     <li><a href="#">- Route 1</a></li>
                     <li><a href="#">- Route 2</a></li>
                     <li><a href="#">- Route 3</a></li>
-                    <!-- Add more locations as needed -->
+                    Add more locations as needed
                 </ul>
-            </div>
+            </div>-->
 
             <div class="post-panel">
                 <form method="POST" action="" id="postForm" enctype="multipart/form-data">
@@ -654,7 +711,7 @@ if (!empty($errors)) {
                 </div>
                 <p class="name-label"><?= $post['FName'] ?> <?= $post['LName'] ?></p>
                 <p class="date-label"><?= date('M d, Y h:i:s A', strtotime($post['created_at'])) ?></p>
-            </div>
+            </div> 
             <div class="post-content">
                 <p><?= $post['content'] ?></p>
                 <a href="<?= $post['link'] ?>" target="_blank" class="post-link"><?= $post['link'] ?></a>
@@ -678,12 +735,78 @@ if (!empty($errors)) {
                         </div>
                     </form>
                 </div>
-                <button class="action-btn">Report</button>
-            </div>
+                <button class="action-btn" id="reportBtn">Report</button>
+
+                <!-- Panel for report form -->
+                <div id="reportPanel" style="display: none;" class="report-panel">
+                <h2>Report</h2>  
+                <button id="closeBtn" class="close-btn">×</button>
+                <form id="reportForm">
+                    <textarea id="reportDescription" placeholder="Enter report description"></textarea>
+                    <!-- <input type="hidden" id="postID" name="postID" value=""> -->
+                    <button type="submit">Submit Report</button>
+                </form>
+                </div>
+
         </li>
+        
     <?php endforeach; ?>
 </ul>
 
+<script>
+ document.addEventListener('DOMContentLoaded', function() {
+  const reportBtn = document.getElementById('reportBtn');
+  const reportPanel = document.getElementById('reportPanel');
+  const closeBtn = document.getElementById('closeBtn');
+  const reportForm = document.getElementById('reportForm');
+  const reportDescription = document.getElementById('reportDescription');
+  const postIDInput = document.getElementById('postID');
+
+  reportBtn.addEventListener('click', function() {
+    reportPanel.style.display = 'block';
+    const postItem = this.closest('.post-item'); // Assuming a structure where each post has a '.post-item' container
+    if (postItem) {
+      const postID = postItem.dataset.postId; // Assuming the post ID is stored in a data attribute
+      postIDInput.value = postID; // Set the postIDInput value to the retrieved post ID
+    }
+  });
+
+  closeBtn.addEventListener('click', function() {
+    reportPanel.style.display = 'none';
+  });
+
+  reportForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    if (validateForm()) {
+      const formData = new FormData(reportForm);
+
+      fetch('process_report.php', {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        reportForm.reset();
+        reportPanel.style.display = 'none';
+        alert('Report submitted successfully!');
+      })
+      .catch(error => console.error('Error:', error));
+    }
+  });
+
+  function validateForm() {
+    if (reportDescription.value.trim() === '') {
+      alert('Please enter a report description.');
+      return false;
+    }
+    return true;
+  }
+});
+
+
+
+</script>
 
 <script>
    function toggleCommentBox(button) {

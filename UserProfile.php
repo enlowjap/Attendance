@@ -97,13 +97,9 @@ if (!empty($errors)) {
 </head>
 <body>
 
-    <!-- Navbar -->
-    <nav id="navbar" class="navbar">
-            <a href="home2.php">Home</a>
-            <a href="UserProfile.php">Profile</a>
-        <!-- <a href="#Discussion Board">Services</a>-->
-            
-        </nav>
+<?php
+    include 'homenavbar.php'; 
+?>
 
 
 
